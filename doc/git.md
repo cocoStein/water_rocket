@@ -1,4 +1,4 @@
-To put in ~/.gitconfigtrick for nice history:
+To put in ~/.gitconfig for nice history:
 
     [user]
         name = Jérôme Dufour
