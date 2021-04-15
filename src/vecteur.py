@@ -1,25 +1,23 @@
 class Vecteur:
-    def __init__(self, x = 0, y = 0, r = 0, s = 0 ):
+    def __init__(self, x = [0, 0], y = [0, 0]):
         self.x = x
         self.y = y
-        self.r = r
-        self.s = s
 
-    def addvect(x = 0, y = 0, r = 0, s = 0):
-        a = x + r
-        b = y + s
-        return ( a, b)
-    def multivect(x = 0, y = 0, r = 0):
-        c = x * r  #seulement pour multiplier un variable a un vecteur
-        d = y * r
-        return ( c, d)
+    def addvect(x = [0, 0], y = [0, 0]):
+        return ( [x[0] + y[0], x[1]+ y[1]])
 
-k,l = Vecteur.addvect(2,1,-3,1)
+    def multivect(x = [0, 0], y = 0):
+        return ([x[0] * y, x[1] * y])
 
-print(k,l)
-g, f = Vecteur.multivect(4,3,2)
-print(g, f)
-h = Vecteur.addvect(k,l,g,f)
+    def scalvect(x = [0, 0], y = [0, 0]):
+        return ((x[0] * y[0]) + (x[1] * y[1]))
 
-print(h)
+if __name__ == "__main__":
+
+K = [2,4]
+L = [2,3]
+J = Vecteur.addvect(K,L)
+print(J)
+
+print(Vecteur.multivect(K,3))
 
