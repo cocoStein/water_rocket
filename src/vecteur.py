@@ -14,10 +14,10 @@ class Vecteur:
 
 if __name__ == "__main__":
 
-K = [2,4]
-L = [2,3]
-J = Vecteur.addvect(K,L)
-print(J)
+    K = [2,4]
+    L = [2,3]
+    J = Vecteur.addvect(K,L)
+    print(J)
 
-print(Vecteur.multivect(K,3))
+    print(Vecteur.multivect(K,3))
 
