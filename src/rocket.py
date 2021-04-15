@@ -1,23 +1,31 @@
-from water_rocket.src import vecteur as vc
-from math import cos, sin, tan
+from water_rocket.src import vecteur as vctr
 
 class Rocket:
-    def __init__(self, x, y, weight, speed=0): #MRU
+    def __init__(self, x, y, weight, speed=0):
         self.x = x
         self.y = y
         self.initial_rocket_speed = speed
         self.weight = weight
 
+    def MRUA(position_I = [0, 0], speed = [0, 0], g = [0, -9.81], time = 0):
+        return vctr.Vecteur.addvect(vctr.Vecteur.addvect(position_I, vctr.Vecteur.multivect(speed, time)), vctr.Vecteur.multivect(g,(time**2)*0.5))
+
 if __name__ == "__main__": #pour tester la class
-    teta = 85
-    distance_x = 20 #m
-    rocket = Rocket(0, 0, 0, 15)
-    acceleration = vc.Vecteur(0, -9.81)
-    V0 = vc.Vecteur(rocket.initial_rocket_speed*cos(teta), rocket.initial_rocket_speed*sin(teta))
+    pos_I = [0, 0]
+    speed = [12, 40]
+    g = [0, -9.81]
+    time = 0
+    add = Rocket.MRUA(pos_I, speed,g , time )
+    essaies = 0
 
-    total_height = vc.Vecteur.multivect(acceleration.x, acceleration.y , (0.5*distance_x**2)) #manque la division pour pouvoir faire avec des vecteurs
+    #while time < 20:
+        ###time += 0.2
+        ##add = Rocket.MRUA(pos_I, speed, g, time)
+        #if round(add[0]) == 25:
+        #print("temps :", time, add )
 
-
-    g = -9.81
-    th = -g*distance_x**2/(2*(rocket.initial_rocket_speed**2)*cos(teta)**2)+tan(teta)*distance_x
-    print(th, "m en y")
+    while add[1] > -0.00001:
+        time += 0.001
+        essaies += 1
+        add = Rocket.MRUA(pos_I, speed, g, time)
+        print("essaies n°", essaies, "Pour un temps de:", time, add )
