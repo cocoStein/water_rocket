@@ -1,22 +1,20 @@
-from water_rocket.src import vecteur as vctr
+from vecteur import Vecteur
 
 class Rocket:
-    def __init__(self, x, y, weight, speed=0):
-        self.x = x
-        self.y = y
-        self.initial_rocket_speed = speed
-        self.weight = weight
+    def __init__(self, x0, v0, a0=Vecteur(0, -9.81), m=1):
+        self.x0 = x0  # position initiale (Vecteur)
+        self.v0 = v0  # vitesse initiale (Vecteur)
+        self.a0 = a0  # vitesse initiale (Vecteur)
+        self.m = m
 
-    def MRUA(position_I = [0, 0], speed = [0, 0], g = [0, -9.81], time = 0):
-        return vctr.Vecteur.addvect(vctr.Vecteur.addvect(position_I, vctr.Vecteur.multivect(speed, time)), vctr.Vecteur.multivect(g,(time**2)*0.5))
+    def MRUA(self, t):
+        return self.x0 + self.v0*t + 0.5*self.a0*t*t
 
 if __name__ == "__main__": #pour tester la class
-    pos_I = [0, 0]
-    speed = [12, 40]
-    g = [0, -9.81]
-    time = 0
-    add = Rocket.MRUA(pos_I, speed,g , time )
-    essaies = 0
+    x0 = Vecteur(0,0)
+    v0 = Vecteur(4.5,4)
+    rocket = Rocket(x0, v0)
+    print(rocket.MRUA(13))
 
     #while time < 20:
         ###time += 0.2
@@ -24,8 +22,9 @@ if __name__ == "__main__": #pour tester la class
         #if round(add[0]) == 25:
         #print("temps :", time, add )
 
-    while add[1] > -0.00001:
-        time += 0.001
-        essaies += 1
-        add = Rocket.MRUA(pos_I, speed, g, time)
-        print("essaies n°", essaies, "Pour un temps de:", time, add )
+    time = 0
+    xt = x0
+    while time < 10 and xt.y >= 0:
+        xt = rocket.MRUA(time)
+        time += 0.1
+        print(xt)
