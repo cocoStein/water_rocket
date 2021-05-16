@@ -19,7 +19,7 @@ coeff = 5
 
 while x0.y >= 0:
     sum_f = P
-    a = Vecteur(0, sum_f / m)
+    a = Vecteur(0, sum_f / m) #vecteur mais uniquement sur y pour l'instant
 
     v_t = a * time + v0
     x_t = v_t * coeff
