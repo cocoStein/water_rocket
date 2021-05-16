@@ -10,7 +10,7 @@ time = 0
 
 #somme des forces
 P = m*(-9.81)
-sum_f = P
+
 
 x = [0]
 y = [0]
@@ -18,6 +18,7 @@ y = [0]
 coeff = 5
 
 while x0.y >= 0:
+    sum_f = P
     a = Vecteur(0, sum_f / m)
 
     v_t = a * time + v0
