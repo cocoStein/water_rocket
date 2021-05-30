@@ -3,7 +3,7 @@ import logging
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 class Vecteur:
-    def __init__(self, x, y):
+    def __init__(self, x = 0, y= 0):
         self.x = x
         self.y = y
 
@@ -45,7 +45,5 @@ if __name__ == "__main__":
 
     print(v1*3)
     print(3*v1)
-
-    print(v1*v2)
 
 
