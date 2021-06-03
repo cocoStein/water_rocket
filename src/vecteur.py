@@ -21,20 +21,26 @@ class Vecteur:
             self.x - other.x,
             self.y - other.y,
         )
+    def __rsub__(self):
+        return Vecteur(
+                -1*self.x,
+                -1*self.y,
+                )
 
-    def __mul__(self, constante):
-        if isinstance(constante, (int, float)):
+    def __mul__(self, other):
+        if isinstance(other, (int, float)):
             return Vecteur(
-                self.x * constante,
-                self.y * constante,
+                self.x * other,
+                self.y * other,
             )
+        elif isinstance(other, Vecteur):
+            return self.x * other.x + self.y * other.y
         logging.warning("La multiplication d'un Vecteur n'est définie qu'avec un scalaire")
         raise NotImplementedError
 
     __rmul__ = __mul__
 
-    def scalvect(x = [0, 0], y = [0, 0]):
-        return ((x[0] * y[0]) + (x[1] * y[1]))
+
 
 if __name__ == "__main__":
     v1 = Vecteur(2,3)
@@ -46,4 +52,5 @@ if __name__ == "__main__":
     print(v1*3)
     print(3*v1)
 
-
+    print(v1 * v2)
+    print(-v2)
