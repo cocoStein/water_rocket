@@ -21,7 +21,7 @@ class Vecteur:
             self.x - other.x,
             self.y - other.y,
         )
-    def __rsub__(self):
+    def __neg__(self):
         return Vecteur(
                 -1*self.x,
                 -1*self.y,
