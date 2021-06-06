@@ -1,37 +1,50 @@
 from water_rocket.src.vecteur import Vecteur
 
+
+
 class Rocket:
     def __init__(self, v0,x0, a0=Vecteur(0, -9.81), m=1):
         self.x0 = x0  # position initiale (Vecteur)
         self.v0 = v0  # vitesse initiale (Vecteur)
         self.a0 = a0  # vitesse initiale (Vecteur)
         self.m = m  #masse initiale
-        self.energie = 0.5*self.m*self.v0.y*self.v0.y + self.m*self.a0.y*self.x0.y
-        self.poids = self.m*self.a0.y
 
 
 class Mover(Rocket):
+    pass
 
-    def MRUA(self, t):
-        xt = self.x0 + self.v0*t + 0.5*self.a0*t*t
-        return xt
+class Forces(Mover):
+    def Poids(self):
+        self.Poids = Vecteur(0, Mover.m * -9.81)
+        return self.Poids
 
-    def pas_a_pas(self, coeff):
-        sum_f_y = self.poids    #uniquement en y
-        sum_f_x = 0
-        a0 = Vecteur(sum_f_x / self.m, sum_f_y / self.m)
-        v_t = a0 * coeff + self.v0
-        x_t = v_t * coeff
-        self.v0 = v_t
-        self.x0 = self.x0 + x_t
-        return self.x0, self.v0
+    def Force_frot(self):
+        self.Force_frot = Mover.v0 * Mover.v0
 
+    def somme_f(self):
+        return self.Poids + self.Force_frot
+
+
+class Energie(Mover):
+    def energie(self):
+        self.energie = 0.5 * Mover.m * Mover.v0 * Mover.v0 + Mover.m * Mover.a0 * Mover.x0
+        return self.energie
+
+
+class MRUA(Mover):
+    def Mrua(self):
+        Mover.x0 = Mover.x0 + Mover.v0 * Mover.t + 0.5 * Mover.a0 * Mover.t * Mover.t
+        return Mover.x0
+
+
+class PasAPas(Mover):
+    def pas_a_pas(self):
+        Mover.a0 = Vecteur(Forces.somme_f / Mover.m)
+        Mover.v0 = Mover.a0 * Mover.t + Mover.v0
+        Mover.x0 += Mover.v0 * Mover.t
+        return Mover.x0, Mover.v0
 if __name__ == "__main__": #pour tester la class
-    x2 = Vecteur(12, 21)
-    v1 = Vecteur(36, 545)
-
-    qw= Mover(v1, x2)
-    rt, ht = qw.pas_a_pas(4)
-    print(rt, ht)
+    gten = Rocket(12, 5, 65)
+    gten = Energie.energie(gten)
 
 
