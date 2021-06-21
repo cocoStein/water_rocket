@@ -24,27 +24,28 @@ class Mover(Rocket):
 
 class Forces(Rocket):
     #class des forces ou l'on peut rajouter et choisir les forces que l'on souhaite prendre en compte pour la somme des forces
-    def __init__(self, poids = 1, force_frot = 1):
-        self.poids = poids
-        self.force_frot = force_frot
-    def Poids(self):
+    #def __init__(self, P = 1, Ff = 1):
+    #    self.P = P
+    #    self.Ff = Ff
+    P = 1       #pas la bonne solution pour le faire mais si je le fais avec la classe alors tous est décalé et je n'arriv plus à définir les def
+    Ff = 1
+    if P == 1:
+        def Poids(self):
         #poids de l'objet
-        if self.poids == 1:
             self.Poids = Vecteur(0, self.m * -9.81)
             return self.Poids
-        else:
-            pass
 
-    def Force_frot(self):
-        #force de frottement de l'objet
-        if self.force_frot == 1:
+    elif Ff == 1:
+        def Force_frot(self):
+            #force de frottement de l'objet
             self.Force_frot = self.v0 * self.v0
-        else:
-            pass
+            return self.Force_frot
+    else:
+        pass
 
     def somme_f(self):
         # somme des forces prisent en compte
-        return Vecteur( self.Poids + self.Force_frot)
+        return Vecteur(Forces.Poids(self) + Forces.Force_frot(self)) #je ne comprens pas pk Forces n'a pas de Poids et de ff ?
 
 
 class Energie(Mover):
@@ -70,15 +71,8 @@ class PasAPas(Mover):
         return self.x0
 
 if __name__ == "__main__": #pour tester la class
-   gten = Rocket(10, 1, 23)
-   gten = Energie.energie(gten)
-   print(gten)
-
-  fff = Rocket(2, 1, 3)
-  fff.t = 1
-  fda = MRUA.Mrua(fff)
-  print(fda)
-
-    gg = Rocket(2, 5, 2)
-    gd = PasAPas.pas_a_pas(gg)
-    print(gd)
+   P = 1
+   Ff = 1
+   aaa = Rocket(12,12)
+   sum = Forces.somme_f(aaa)
+   print(sum)
