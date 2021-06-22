@@ -1,45 +1,54 @@
-from water_rocket.src.rocket import Rocket
 from water_rocket.src.vecteur import Vecteur
-from math import cos, sin, tan, radians, degrees
 import matplotlib.pyplot as plt
-import logging
-
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+from water_rocket.src.rocket import *
 
 
 x0 = Vecteur(0, 0)
+v0 = Vecteur(21, 45)
 
-x0.y = float(input("Hauteur de la fusée:"))
-if x0.y > 150:
-    logging.warning("La valeur de la hauteur de la fusée ne corresponds pas")
-    raise NotImplementedError
 
-v_pas0 = float(input("vitesse de la fusée:"))
-
-theta = float(input("Angle de la fusée:"))
-if theta > 360:
-    logging.warning("L'angle de la fusée est trop élever")
-    raise NotImplementedError
-theta_rad = radians(theta)
-print(theta_rad)
-
-v0 = Vecteur(cos(theta_rad)*v_pas0, sin(theta_rad)*v_pas0)
-
-if theta == 90 or theta == 270:
-    v0 = Vecteur(0, sin(theta_rad)*v_pas0)
-
-rocket = Rocket(x0, v0)
+stuck1 = Rocket(v0,x0)
 time = 0
+
+stuck2 = Rocket(v0,x0)
+stuck2.t = 0
+stuck3 = Rocket(v0,x0)
+stuck3.t = 0.5
+
+sss = PasAPas.pas_a_pas(stuck3)
 
 xt = x0
 x = [0]
 y = [0]
 
-while time < 50 and xt.y >= 0:
-    xt = rocket.MRUA(time)
-    time += 0.1
+i = [0]
+k = [0]
+
+p = [0]
+l = [0]
+plt.figure(1)
+while xt.y >= 0:
+    xt = MRUA.Mrua(stuck2)
+    stuck2.t += 0.2
     x.append(xt.x)
     y.append(xt.y)
+    #print(xt)
 
-plt.plot(x, y)
+while stuck3.x0.y >= 0:
+    stuck3.x0 = PasAPas.pas_a_pas(stuck3)
+    i.append(stuck3.x0.x)
+    k.append(stuck3.x0.y)
+    #print(stuck3.x0)
+
+plt.plot(x, y, '-')
+plt.plot(i, k, '-ok')
+
+plt.figure(2)
+while time > 20:
+    time += 1
+    aaa = Energie.energie(stuck1)
+    p.append(aaa)
+    l.append(time)
+    print(aaa)
+plt.plot(p, l, '-')
 plt.show()
