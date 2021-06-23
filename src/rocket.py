@@ -15,6 +15,10 @@ class Rocket:
         self.somme_f = poids + ff
         return self.somme_f
 
+    def energie(self):
+        # type de mouvement avec l'énergie cinétique et potentielle
+        return 0.5 * self.m * self.v0 * self.v0 + self.m * self.a0 * self.x0
+
 class Mover(Rocket):
     #selecteur entre les différents types de mover
     def __init__(self, t):
@@ -47,15 +51,15 @@ class Mover(Rocket):
 #            return Vecteur(Forces.Poids() + Forces.Force_frot() #je ne comprends pas pk Forces n'a pas de Poids et de ff ?
 
 
-class Energie(Mover):
-    def energie(self):
-        # type de mouvement avec l'énergie cinétique et potentielle
-      return 0.5 * self.m * self.v0 * self.v0 + self.m * self.a0 * self.x0
+#class Energie(Mover):
+#    def energie(self):
+#        # type de mouvement avec l'énergie cinétique et potentielle
+#      return 0.5 * self.m * self.v0 * self.v0 + self.m * self.a0 * self.x0
 
 
 
 class MRUA(Mover):
-    def Mrua(self):
+    def mrua(self):
         # type de mouvenemt avec des MRUA basiques
         return self.x0 + self.v0 * self.t + 0.5 * self.a0 * self.t * self.t
 
@@ -76,8 +80,8 @@ if __name__ == "__main__": #pour tester la class
     rrr.t = 0.5
     print(rrr.somme_f())
     print(PasAPas.pas_a_pas(rrr))
-    print(MRUA.Mrua(rrr))
-    print(Energie.energie(rrr))
+    print(MRUA.mrua(rrr))
+
 
 
 
