@@ -28,7 +28,7 @@ class MRUA():
         # type de mouvenemt avec des MRUA basiques
         Rocket.v0 += Rocket.a0*dt
         Rocket.x0 += Rocket.v0 * dt + 0.5 * Rocket.a0 * dt * dt
-         #Rocket.x0 + Rocket.v0 * dt + 0.5 * Rocket.a0 * dt * dt
+        #Rocket.x0 + Rocket.v0 * dt + 0.5 * Rocket.a0 * dt * dt
 
 
 class PasAPas():
@@ -43,14 +43,6 @@ if __name__ == "__main__": #pour tester la class
     v0 = Vecteur(12,78)
     x0 = Vecteur(0,0)
     rrr = Rocket(v0,x0)
-    rrr.t = 0.5
-    print(rrr.somme_f())
-    print(PasAPas.pas_a_pas(rrr))
-    print(MRUA.mrua(rrr))
-
-
-
-
-
-
+    g = 0
+    print(MRUA.move(g, Rocket=rrr, dt=2))
 

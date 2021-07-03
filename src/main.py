@@ -1,59 +1,46 @@
-from water_rocket.src.rocket import Mover
-from water_rocket.src.vecteur import Vecteur
-import matplotlib.pyplot as plt
-
-coeff = 0.5
-t = 0
-t2 = 0
-
-v0 = Vecteur(12, 46)
-x0= Vecteur(0,0)
-
-x = [x0.x]
-y = [x0.y]
-
-w = [x0.x]
-z = [x0.y]
+from water_rocket.src.rocket import *
+import pygame
 
 
+pygame.init()
 
-Stuka = Mover(v0, x0)
-Stuka2 = Mover(v0, x0)
-B17 = Mover(v0, x0)
+#Variables
+WIDTH = 1080
+HEIGHT = 720
+running = True
 
-i = [t2]
-k = [B17.energie]
-
+x0 = Vecteur(0, 0)
+v0 = Vecteur(21, 45)
 xt = x0
-plt.figure(1)
-while xt.y >= 0:
-    xt = Stuka2.MRUA(t)
-    t += 0.1
-    plt.plot(Stuka2.x0.x, Stuka2.x0.y)
-    w.append(xt.x)
-    z.append(xt.y)
 
-plt.plot(w, z)
+stuck1 = Rocket(v0,x0)
+time = 0
+stuck1.t = 0.5
 
 
-while Stuka.x0.y >= 0:      #pas-a-pas
-    sqw, fff = Stuka.pas_a_pas(coeff)
-    plt.plot(Stuka.x0.x, Stuka.x0.y)
-    x.append(Stuka.x0.x)
-    y.append(Stuka.x0.y)
-    print(Stuka.energie)
-plt.plot(x, y, '-ok')
+#charcher les images
+rocket_img = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/water_rocket/water_rocket/src/img/rocket.png')
+
+#création de la fenêtre
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Water Rocket")
 
 
-plt.figure(2)
-#while B17.x0.y >= 0:
-#    B17.x0, B17.v0 = B17.pas_a_pas(t2)
-#    plt.plot(t2, B17.energie)
-#    i.append(t2)
-#    k.append(B17.energie)
-#    t2 += 0.1
-#
-#plt.plot(i, k)
 
-plt.show()
+while running:
+    #couleur pour le backgground
+    screen.fill((18, 182, 195))
+    pygame.display.flip()
 
+    #afficher les images
+    screen.blit(rocket_img, (0, HEIGHT-60))
+    pygame.display.flip()
+
+    #boucle de la fusee
+    while stuck1.x0.y > HEIGHT-60:
+        MRUA.move(stuck1)
+
+    #check si la fenêtre est ouverte
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
