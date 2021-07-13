@@ -44,5 +44,7 @@ if __name__ == "__main__": #pour tester la class
     x0 = Vecteur(0,0)
     rrr = Rocket(v0,x0)
     g = 0
+    #MRUA.move(rrr)
+    #print(MRUA.move(rrr))
     print(MRUA.move(g, Rocket=rrr, dt=2))
 
