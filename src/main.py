@@ -12,10 +12,12 @@ clock = pygame.time.Clock()
 mover = "MRUA"
 
 Rocket_x = 0
-Rocket_y = HEIGHT-60
+Rocket_y = HEIGHT-160
 
 #charcher les images
 rocket_img = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/water_rocket/water_rocket/src/img/rocket.png')
+sky_img = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/water_rocket/water_rocket/src/img/SKY.png')
+dirt_img = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/water_rocket/water_rocket/src/img/dirt.png')
 
 #charger les polices
 police = pygame.font.Font(None, 50)
@@ -27,8 +29,10 @@ pygame.display.set_caption("Water Rocket")
 text_move = police.render('Type de mover:', True, (0, 0, 0))
 
 while running:
-    #couleur pour le backgground
-    screen.fill((18, 182, 195))
+    #background
+    #screen.fill((18, 182, 195))
+    screen.blit(sky_img, (0,0))
+    screen.blit(dirt_img, (0, HEIGHT-100))
 
     #afficher les images
     screen.blit(rocket_img, (Rocket_x, Rocket_y))
@@ -55,7 +59,7 @@ while running:
                 text_move = police.render('Type de mover: PAS A PAS', True, (0, 0, 0))
             if event.key == pygame.K_SPACE:
                 Rocket_x = 0
-                Rocket_y = HEIGHT - 60
+                Rocket_y = HEIGHT - 160
 
     clock.tick(60)
     # update la fenêtre
