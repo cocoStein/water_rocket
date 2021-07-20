@@ -1,3 +1,4 @@
+#import
 from water_rocket.src.rocket import *
 import pygame
 import sys
@@ -30,6 +31,8 @@ pygame.display.set_caption("Water Rocket")
 
 
 def draw_text(text, font, color, surface, x, y):
+    #modules pour afficher du texte
+
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
     textrect.topleft = (x, y)
@@ -39,20 +42,21 @@ click = False
 
 
 def main_menu():
+    #module du menu
+
     while True:
 
-        screen.fill((0, 0, 0))
+        screen.fill((10, 10, 10))
         draw_text('main menu', police, (255, 255, 255), screen, 20, 20)
 
+        #obtenir la position de la souris
         mx, my = pygame.mouse.get_pos()
 
         button_1 = pygame.Rect(50, 100, 295, 50)
-
-
         button_2 = pygame.Rect(50, 200, 225, 50)
         if button_1.collidepoint((mx, my)):
             if click:
-                game()
+                simulator()
         if button_2.collidepoint((mx, my)):
             if click:
                 options()
@@ -78,7 +82,9 @@ def main_menu():
         clock.tick(60)
 
 
-def game():
+def simulator():
+    #module de la simulation
+
     running = True
     Rocket_x = 0
     Rocket_y = HEIGHT - 160
@@ -110,6 +116,10 @@ def game():
                 if event.key == pygame.K_SPACE:
                     Rocket_x = 0
                     Rocket_y = HEIGHT - 160
+                if event.key == pygame.K_3:
+                    Rocket_x, Rocket_y =  pygame.mouse.get_pos()
+                    Rocket_x -= 45
+                    Rocket_y -= 50
 
 
         for event in pygame.event.get():
@@ -124,13 +134,17 @@ def game():
         clock.tick(60)
 
 def options():
+    #module des commandes et options de la simulation
+
     running = True
     while running:
         screen.fill((0, 0, 0))
 
         draw_text('Commandes', police, (255, 255, 255), screen, 20, 20)
-        draw_text('1. Appuyez sur 1,2 pour changer le mover', police_subtitle, (255, 255, 255), screen, 60, 60)
+        draw_text('1. Appuyez sur 1,2 pour changer de mover', police_subtitle, (255, 255, 255), screen, 60, 60)
         draw_text('2. Appuyez sur espace pour remmettre la fusée à zero', police_subtitle, (255, 255, 255), screen, 60, 80)
+        draw_text('3. Appuyez sur 3 pour remmettre la fusée à la position de votre souris', police_subtitle, (255, 255, 255), screen, 60,
+                  100)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -146,5 +160,6 @@ main_menu()
 
 
 clock.tick(60)
+
 # update la fenêtre
 pygame.display.flip()
