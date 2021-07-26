@@ -10,14 +10,15 @@ WIDTH = 1080
 HEIGHT = 720
 running = True
 clock = pygame.time.Clock()
-mover = "MRUA"
-
 
 
 #charcher les images
 rocket_img = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/water_rocket/water_rocket/src/img/rocket.png')
 sky_img = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/water_rocket/water_rocket/src/img/SKY.png')
 dirt_img = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/water_rocket/water_rocket/src/img/dirt.png')
+
+rocket_imgX, rocket_imgY = rocket_img.get_size()
+dirt_imgX, dirt_imgY = dirt_img.get_size()
 
 #charger les polices
 police = pygame.font.Font(None, 50)
@@ -60,12 +61,13 @@ def main_menu():
         if button_2.collidepoint((mx, my)):
             if click:
                 options()
-        pygame.draw.rect(screen, (255, 0, 0), button_1)
-        pygame.draw.rect(screen, (255, 0, 0), button_2)
+        pygame.draw.rect(screen, (0, 200, 100), button_1)
+        pygame.draw.rect(screen, (0, 200, 100), button_2)
 
         draw_text('Rocket simulator', police, (255, 255, 255), screen, 50, 110)
         draw_text('Commandes', police, (255, 255, 255), screen, 50, 210)
         click = False
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -87,17 +89,26 @@ def simulator():
 
     running = True
     Rocket_x = 0
-    Rocket_y = HEIGHT - 160
+    Rocket_y = HEIGHT - 160.0
     text_move = police.render('Type de mover:', True, (0, 0, 0))
 
     while running:
         # background
-        # screen.fill((18, 182, 195))
         screen.blit(sky_img, (0, 0))
         screen.blit(dirt_img, (0, HEIGHT - 100))
 
+        # scale image de la fusee en fonction de sa position
+        scaleRock_x = rocket_imgX + Rocket_x/50
+        scaleRock_y = rocket_imgY + Rocket_y/50
+        rocket2 = pygame.transform.scale(rocket_img, (int(scaleRock_x),int(scaleRock_y)))
+
+        scaleDirt_x = dirt_imgX + Rocket_x / 50
+        scaleDirt_y = dirt_imgY + Rocket_y / 15
+        dirt2 = pygame.transform.scale(dirt_img, (int(scaleDirt_x), int(scaleDirt_y)))
+
         # afficher les images
-        screen.blit(rocket_img, (Rocket_x, Rocket_y))
+        screen.blit(dirt2, (0, HEIGHT - 100))
+        screen.blit(rocket2, (Rocket_x, Rocket_y))
         screen.blit(text_move, (0, 0))
 
 
