@@ -28,7 +28,11 @@ police_subtitle = pygame.font.Font(None, 25)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Water Rocket")
 
-
+# Rocket
+v0 = Vecteur(50,80)
+x0 = Vecteur(0,1)
+rrr = Rocket(v0,x0)
+g = 0
 
 
 def draw_text(text, font, color, surface, x, y):
@@ -40,6 +44,7 @@ def draw_text(text, font, color, surface, x, y):
     surface.blit(textobj, textrect)
 
 click = False
+
 
 
 def main_menu():
@@ -66,6 +71,8 @@ def main_menu():
 
         draw_text('Rocket simulator', police, (255, 255, 255), screen, 50, 110)
         draw_text('Commandes', police, (255, 255, 255), screen, 50, 210)
+        draw_text('Scores', police, (255, 255, 255), screen, 50, 310)
+
         click = False
 
         for event in pygame.event.get():
@@ -83,13 +90,13 @@ def main_menu():
         pygame.display.update()
         clock.tick(60)
 
-
 def simulator():
     #module de la simulation
 
     running = True
-    Rocket_x = 0
-    Rocket_y = HEIGHT - 160.0
+    Rocket_x = rrr.x0.x
+    Rocket_y =  rrr.x0.y +570
+
     text_move = police.render('Type de mover:', True, (0, 0, 0))
 
     while running:
@@ -112,8 +119,18 @@ def simulator():
         screen.blit(text_move, (0, 0))
 
 
-        Rocket_x += 1
-        Rocket_y -= 1.5
+        MRUA.move(g, Rocket=rrr, dt=0.25)
+        Rocket_x = rrr.x0.x
+        Rocket_y = -rrr.x0.y + 570
+
+
+        if rrr.x0.y < 0:
+            running = False
+            print('x0:', rrr.x0)
+            rrr.v0 = Vecteur(50,80)
+            rrr.x0 = Vecteur(0,1)
+
+
 
         # check pour les event
         for event in pygame.event.get():
@@ -129,6 +146,7 @@ def simulator():
                     Rocket_y = HEIGHT - 160
                 if event.key == pygame.K_3:
                     Rocket_x, Rocket_y =  pygame.mouse.get_pos()
+                    print(pygame.mouse.get_pos())
                     Rocket_x -= 45
                     Rocket_y -= 50
 
@@ -142,7 +160,7 @@ def simulator():
                     running = False
 
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(30)
 
 def options():
     #module des commandes et options de la simulation
@@ -170,7 +188,7 @@ def options():
 main_menu()
 
 
-clock.tick(60)
+clock.tick(30)
 
 # update la fenêtre
 pygame.display.flip()

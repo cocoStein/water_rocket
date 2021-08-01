@@ -40,13 +40,13 @@ class PasAPas():
         Rocket.x0 += Rocket.v0 * dt
 
 if __name__ == "__main__": #pour tester la class
-    v0 = Vecteur(1,3)
-    x0 = Vecteur(0,0)
+    v0 = Vecteur(23,40)
+    x0 = Vecteur(0,1)
     rrr = Rocket(v0,x0)
     g = 0
     #MRUA.move(rrr)
     #print(MRUA.move(rrr))
-    while True:
+    while rrr.x0.y > 0:
         MRUA.move(g, Rocket=rrr, dt=0.25)
-        print(rrr.x0)
-        print(rrr.v0)
+        print('x0:', rrr.x0)
+        #print('v0:',rrr.v0)
