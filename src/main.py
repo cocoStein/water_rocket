@@ -4,7 +4,6 @@ from water_rocket.src.settings import *
 import pygame
 import sys
 
-
 pygame.init()
 
 
@@ -18,12 +17,6 @@ v0 = Vecteur(20,100)
 x0 = Vecteur(0,1)
 rrr = Rocket(v0,x0)
 g = 0
-
-
-
-#charger les polices
-police = pygame.font.Font(None, 50)
-police_subtitle = pygame.font.Font(None, 25)
 
 
 def main_menu():
@@ -41,7 +34,7 @@ def main_menu():
         button_2 = pygame.Rect(50, 200, 225, 50)
         if button_1.collidepoint((mx, my)):
             if click:
-                simulator()
+                input()
         if button_2.collidepoint((mx, my)):
             if click:
                 options()
@@ -51,7 +44,6 @@ def main_menu():
 
         draw_text('Rocket simulator', police, WHITE, screen, 50, 110)
         draw_text('Commandes', police, WHITE, screen, 50, 210)
-        draw_text('Scores', police, WHITE, screen, 50, 310)
 
         click = False
 
@@ -63,6 +55,56 @@ def main_menu():
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+
+        pygame.display.update()
+        clock.tick(60)
+
+def input():
+    #module des inputs pour la simulation
+
+    running = True
+    click = False
+    input_box1 = InputBox(175, 100, 10, 32)
+    input_box2 = InputBox(160, 200, 100, 32)
+    input_boxes = [input_box1, input_box2]
+
+    while running:
+        screen.fill((0, 0, 0))
+
+        # obtenir la position de la souris
+        mx, my = pygame.mouse.get_pos()
+
+        button_1 = pygame.Rect(HEIGHT/2, WIDTH/2, 295, 50)
+
+        if button_1.collidepoint((mx, my)):
+            if click:
+                simulator()
+                running = False
+        pygame.draw.rect(screen, GREEN, button_1)
+
+        draw_text('Réglage de la fusée', police, WHITE, screen, 20, 20)
+        draw_text('Position:', police, WHITE, screen, 20, 100)
+        draw_text('Vitesse:', police, WHITE,screen, 20, 200)
+        draw_text('Lancement', police, WHITE, screen, HEIGHT/2 +5, WIDTH/2 +10)
+
+        for box in input_boxes:
+            box.update()
+
+
+        for box in input_boxes:
+            box.draw(screen)
+        for event in pygame.event.get():
+            for box in input_boxes:
+                box.handle_event(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
@@ -109,8 +151,7 @@ def simulator():
             print('x0:', rrr.x0)
             rrr.v0 = Vecteur(50,80)
             rrr.x0 = Vecteur(0,1)
-
-
+            score()
 
         # check pour les event
         for event in pygame.event.get():
@@ -140,7 +181,7 @@ def simulator():
                     running = False
 
         pygame.display.update()
-        clock.tick(30)
+        clock.tick(60)
 
 def options():
     #module des commandes et options de la simulation
@@ -165,10 +206,30 @@ def options():
         pygame.display.update()
         clock.tick(60)
 
+def score():
+    #module de fin de simulation avec le score
+
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
+
+        draw_text('SCORE', police, WHITE, screen, 20, 20)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+
+        pygame.display.update()
+        clock.tick(60)
+
 main_menu()
 
 
-clock.tick(30)
+clock.tick(60)
 
 # update la fenêtre
 pygame.display.flip()
