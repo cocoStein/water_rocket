@@ -186,7 +186,6 @@ def simulator():
         pygame.display.update()
         clock.tick(60)
 
-
 def score():
     #module de fin de simulation avec le score
 

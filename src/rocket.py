@@ -21,7 +21,12 @@ class Rocket:
         self.x0 = (self.v0*self.v0)/(2*self.a0)
          #0.5 * self.m * self.v0 * self.v0 + self.m * self.a0 * self.x0
 
-
+#class Forces:
+#    def __init__(self, Rocket):
+#        self.Rocket = Rocket
+#
+#    def Poids(self):
+#        self.poids = Vecteur(self.m*0, self.m*-9.81)
 
 class MRUA():
     def move(self, Rocket, dt):
@@ -29,7 +34,6 @@ class MRUA():
         Rocket.v0 += Rocket.a0*dt
         Rocket.x0 += Rocket.v0 * dt + 0.5 * Rocket.a0 * dt * dt
         #Rocket.x0 + Rocket.v0 * dt + 0.5 * Rocket.a0 * dt * dt
-
 
 class PasAPas():
     def move(self, Rocket, dt):
