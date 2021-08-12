@@ -1,5 +1,5 @@
 import pygame
-from water_rocket.src.rocket import *
+
 
 pygame.font.init()
 
@@ -13,7 +13,7 @@ clock = pygame.time.Clock()
 #colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-RED = (220, 0,0)
+RED = (220, 0, 0)
 GREEN = (0, 220, 0)
 BLUE = (0, 0, 255)
 DARKGRAY = (40, 40, 40)

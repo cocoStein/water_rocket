@@ -1,7 +1,9 @@
 #import
 from water_rocket.src.settings import *
+from water_rocket.src.rocket import *
 import pygame
 import sys
+import time
 
 pygame.init()
 
@@ -12,12 +14,16 @@ pygame.display.set_caption("Water Rocket")
 
 
 # Rocket
-
+v0 = Vecteur(50, 100)
+x0 = Vecteur(0, 1)
+rrr = Rocket(v0, x0)
+g = 0
 
 
 def main_menu():
     #module du menu
 
+    click = False
     while True:
 
         screen.fill((10, 10, 10))
@@ -80,8 +86,9 @@ def input():
             if click:
                 simulator()
                 running = False
-                v0 = Vecteur(int(input_box2.text), 100)
-                return v0
+                #v0 = Vecteur(int(input_box2.text), 100)
+                #return v0
+
         pygame.draw.rect(screen, GREEN, button_1)
 
         draw_text('Réglage de la fusée', police, WHITE, screen, 20, 20)
@@ -105,7 +112,7 @@ def input():
                     running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    click = True
+                    click = True  #ça fait un bug avec le bouton et les zones de textes
 
         pygame.display.update()
         clock.tick(60)
@@ -113,15 +120,11 @@ def input():
 def simulator():
     #module de la simulation
 
-    #v0 = Vecteur(int(in), 100)
-    x0 = Vecteur(0, 1)
-    v0 = input()
-    rrr = Rocket(v0, x0)
-    g = 0
-
     running = True
     Rocket_x = rrr.x0.x
     Rocket_y =  rrr.x0.y +570
+    miniRocketX = Rocket_x + 1000
+    miniRocketY = Rocket_y  +200
 
     text_move = police.render('Type de mover:', True, (0, 0, 0))
 
@@ -144,11 +147,18 @@ def simulator():
         screen.blit(rocket2, (Rocket_x, Rocket_y))
         screen.blit(text_move, (0, 0))
 
+        #miniMap
+        miniMap = pygame.Rect(WIDTH-175, 130, 160, 20)
+        pygame.draw.rect(screen, GREEN,  miniMap)
+        pygame.draw.circle(screen, RED, (miniRocketX,miniRocketY), 5)
+
 
         MRUA.move(g, Rocket=rrr, dt=0.25)
         Rocket_x = rrr.x0.x
         Rocket_y = -rrr.x0.y + 570
-
+        miniRocketX = Rocket_x*0.1 +930
+        miniRocketY = Rocket_y*0.1 +65
+        time.sleep(0.04)
 
         if rrr.x0.y < 0:
             running = False
@@ -173,9 +183,6 @@ def simulator():
                     Rocket_x, Rocket_y =  pygame.mouse.get_pos()
                     Rocket_x -= 45
                     Rocket_y -= 50
-
-
-        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
