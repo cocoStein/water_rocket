@@ -24,6 +24,7 @@ COLOR_ACTIVE = pygame.Color('dodgerblue2')
 #charcher les polices
 police = pygame.font.Font(None, 50)
 police_subtitle = pygame.font.Font(None, 25)
+mini_police = pygame.font.Font(None, 20)
 FONT = pygame.font.Font(None, 32)
 
 

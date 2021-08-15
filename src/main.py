@@ -20,50 +20,6 @@ rrr = Rocket(v0, x0)
 g = 0
 
 
-def main_menu():
-    #module du menu
-
-    click = False
-    while True:
-
-        screen.fill((10, 10, 10))
-        draw_text('main menu', police, WHITE, screen, 20, 20)
-
-        #obtenir la position de la souris
-        mx, my = pygame.mouse.get_pos()
-
-        button_1 = pygame.Rect(50, 100, 295, 50)
-        button_2 = pygame.Rect(50, 200, 225, 50)
-        if button_1.collidepoint((mx, my)):
-            if click:
-                input()
-        if button_2.collidepoint((mx, my)):
-            if click:
-                options()
-
-        pygame.draw.rect(screen, GREEN, button_1)
-        pygame.draw.rect(screen, GREEN, button_2)
-
-        draw_text('Rocket simulator', police, WHITE, screen, 50, 110)
-        draw_text('Commandes', police, WHITE, screen, 50, 210)
-
-        click = False
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    click = True
-
-        pygame.display.update()
-        clock.tick(60)
-
 def input():
     #module des inputs pour la simulation
 
@@ -85,13 +41,13 @@ def input():
         if button_1.collidepoint((mx, my)):
             if click:
                 simulator()
-                running = False
+                running = True
                 #v0 = Vecteur(int(input_box2.text), 100)
                 #return v0
 
         pygame.draw.rect(screen, GREEN, button_1)
 
-        draw_text('Réglage de la fusée', police, WHITE, screen, 20, 20)
+        draw_text('Réglages de la fusée', police, WHITE, screen, 20, 20)
         draw_text('Position:', police, WHITE, screen, 20, 100)
         draw_text('Vitesse:', police, WHITE,screen, 20, 200)
         draw_text('Lancement', police, WHITE, screen, HEIGHT/2 +5, WIDTH/2 +10)
@@ -107,9 +63,6 @@ def input():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True  #ça fait un bug avec le bouton et les zones de textes
@@ -120,6 +73,7 @@ def input():
 def simulator():
     #module de la simulation
 
+    sim = False
     running = True
     Rocket_x = rrr.x0.x
     Rocket_y =  rrr.x0.y +570
@@ -151,21 +105,22 @@ def simulator():
         miniMap = pygame.Rect(WIDTH-175, 130, 160, 20)
         pygame.draw.rect(screen, GREEN,  miniMap)
         pygame.draw.circle(screen, RED, (miniRocketX,miniRocketY), 5)
+        draw_text("Distance:", mini_police, WHITE, screen, WIDTH -175, 160)
+        draw_text("Vitesse:", mini_police, WHITE, screen, WIDTH - 175, 180)
 
-
-        MRUA.move(g, Rocket=rrr, dt=0.25)
-        Rocket_x = rrr.x0.x
-        Rocket_y = -rrr.x0.y + 570
-        miniRocketX = Rocket_x*0.1 +930
-        miniRocketY = Rocket_y*0.1 +65
-        time.sleep(0.04)
+        if sim == True:
+            MRUA.move(g, Rocket=rrr, dt=0.25)
+            Rocket_x = rrr.x0.x
+            Rocket_y = -rrr.x0.y + 570
+            miniRocketX = Rocket_x * 0.1 + 930
+            miniRocketY = Rocket_y * 0.1 + 65
+            time.sleep(0.02)
 
         if rrr.x0.y < 0:
-            running = False
+            sim = False
             print('x0:', rrr.x0)
-            rrr.v0 = Vecteur(50,80)
+            rrr.v0 = Vecteur(50,100)
             rrr.x0 = Vecteur(0,1)
-            score()
 
         # check pour les event
         for event in pygame.event.get():
@@ -177,8 +132,7 @@ def simulator():
                 if event.key == pygame.K_2:
                     text_move = police.render('Type de mover: PAS A PAS', True, (0, 0, 0))
                 if event.key == pygame.K_SPACE:
-                    Rocket_x = 0
-                    Rocket_y = HEIGHT - 160
+                    sim = True
                 if event.key == pygame.K_3:
                     Rocket_x, Rocket_y =  pygame.mouse.get_pos()
                     Rocket_x -= 45
@@ -193,54 +147,7 @@ def simulator():
         pygame.display.update()
         clock.tick(60)
 
-def score():
-    #module de fin de simulation avec le score
-
-    Rocket_x = rrr.x0.x
-    Rocket_y = rrr.x0.y + 570
-    running = True
-    while running:
-        screen.fill((0, 0, 0))
-
-        draw_text('SCORE', police, WHITE, screen, 20, 20)
-
-        screen.blit(rocket_img, (Rocket_x, Rocket_y))
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-
-        pygame.display.update()
-        clock.tick(60)
-
-def options():
-    #module des commandes et options de la simulation
-
-    running = True
-    while running:
-        screen.fill((0, 0, 0))
-
-        draw_text('Commandes', police, WHITE, screen, 20, 20)
-        draw_text('1. Appuyez sur 1,2 pour changer de mover', police_subtitle, WHITE, screen, 60, 60)
-        draw_text('2. Appuyez sur espace pour remmettre la fusée à zero', police_subtitle, WHITE, screen, 60, 80)
-        draw_text('3. Appuyez sur 3 pour remmettre la fusée à la position de votre souris', police_subtitle, WHITE, screen, 60,
-                  100)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-
-        pygame.display.update()
-        clock.tick(60)
-
-main_menu()
-
+input()
 
 clock.tick(60)
 
