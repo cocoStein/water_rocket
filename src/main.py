@@ -14,7 +14,7 @@ pygame.display.set_caption("Water Rocket")
 
 
 # Rocket
-v0 = Vecteur(50, 100)
+v0 = Vecteur(100, 100)
 x0 = Vecteur(0, 1)
 rrr = Rocket(v0, x0)
 g = 0
@@ -79,27 +79,26 @@ def simulator():
     Rocket_y =  rrr.x0.y +570
     miniRocketX = Rocket_x + 1000
     miniRocketY = Rocket_y  +200
+    scroll = [0,0]
+    dirtX = dirt_imgX
 
     text_move = police.render('Type de mover:', True, (0, 0, 0))
 
     while running:
         # background
         screen.blit(sky_img, (0, 0))
-        screen.blit(dirt_img, (0, HEIGHT - 100))
-
-        # scale image de la fusee en fonction de sa position
-        scaleRock_x = rocket_imgX + Rocket_x/50
-        scaleRock_y = rocket_imgY + Rocket_y/50
-        rocket2 = pygame.transform.scale(rocket_img, (int(scaleRock_x),int(scaleRock_y)))
-
-        scaleDirt_x = dirt_imgX + Rocket_x / 50
-        scaleDirt_y = dirt_imgY + Rocket_y / 15
-        dirt2 = pygame.transform.scale(dirt_img, (int(scaleDirt_x), int(scaleDirt_y)))
 
         # afficher les images
-        screen.blit(dirt2, (0, HEIGHT - 100))
-        screen.blit(rocket2, (Rocket_x, Rocket_y))
+        screen.blit(dirt_img, (0 -scroll[0],HEIGHT - scroll[1] + 410))
+        screen.blit(rocket_img, (Rocket_x - scroll[0] + 450, Rocket_y -scroll[1] + 495))
         screen.blit(text_move, (0, 0))
+
+        if Rocket_x > (dirt_imgX):
+            #loop pour créer le sol en fonction de la position de la Rocket
+
+            dirtX =+ dirt_imgX
+            screen.blit(dirt_img, (0 - scroll[0] + dirtX, HEIGHT - scroll[1] + 410))
+            print("dirt:", dirtX)
 
         #miniMap
         miniMap = pygame.Rect(WIDTH-175, 130, 160, 20)
@@ -107,6 +106,9 @@ def simulator():
         pygame.draw.circle(screen, RED, (miniRocketX,miniRocketY), 5)
         draw_text("Distance:", mini_police, WHITE, screen, WIDTH -175, 160)
         draw_text("Vitesse:", mini_police, WHITE, screen, WIDTH - 175, 180)
+
+        scroll[0] += (Rocket_x - scroll[0])/5
+        scroll[1] += (Rocket_y - scroll[1])/7
 
         if sim == True:
             MRUA.move(g, Rocket=rrr, dt=0.25)
@@ -121,6 +123,7 @@ def simulator():
             print('x0:', rrr.x0)
             rrr.v0 = Vecteur(50,100)
             rrr.x0 = Vecteur(0,1)
+            dirtX = dirt_imgX
 
         # check pour les event
         for event in pygame.event.get():
