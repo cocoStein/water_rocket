@@ -1,4 +1,4 @@
-#import
+# import
 from water_rocket.src.settings import *
 from water_rocket.src.rocket import *
 import pygame
@@ -8,13 +8,13 @@ import time
 pygame.init()
 
 
-#création de la fenêtre
+# création de la fenêtre
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Water Rocket")
 
 
 # Rocket
-v0 = Vecteur(100, 100)
+v0 = Vecteur(90, 100)
 x0 = Vecteur(0, 1)
 rrr = Rocket(v0, x0)
 g = 0
@@ -42,11 +42,11 @@ def input():
             if click:
                 simulator()
                 running = True
+                click = False
                 #v0 = Vecteur(int(input_box2.text), 100)
                 #return v0
 
         pygame.draw.rect(screen, GREEN, button_1)
-
         draw_text('Réglages de la fusée', police, WHITE, screen, 20, 20)
         draw_text('Position:', police, WHITE, screen, 20, 100)
         draw_text('Vitesse:', police, WHITE,screen, 20, 200)
@@ -71,15 +71,15 @@ def input():
         clock.tick(60)
 
 def simulator():
-    #module de la simulation
+    # module de la simulation
 
     sim = False
     running = True
     Rocket_x = rrr.x0.x
-    Rocket_y =  rrr.x0.y +570
+    Rocket_y = rrr.x0.y + 570
     miniRocketX = Rocket_x + 1000
-    miniRocketY = Rocket_y  +200
-    scroll = [0,0]
+    miniRocketY = Rocket_y + 200
+    scroll = [0, 0]
     dirtX = dirt_imgX
 
     text_move = police.render('Type de mover:', True, (0, 0, 0))
@@ -89,24 +89,39 @@ def simulator():
         screen.blit(sky_img, (0, 0))
 
         # afficher les images
-        screen.blit(dirt_img, (0 -scroll[0],HEIGHT - scroll[1] + 410))
-        screen.blit(rocket_img, (Rocket_x - scroll[0] + 450, Rocket_y -scroll[1] + 495))
+        screen.blit(dirt_img, (0 - scroll[0], HEIGHT - scroll[1] + 410))
+        screen.blit(rocket_img, (Rocket_x - scroll[0] + 450, Rocket_y - scroll[1] + 495))
         screen.blit(text_move, (0, 0))
+        rocket_cp = pygame.Rect(Rocket_x + 450 - scroll[0], Rocket_y - scroll[1] + 495, rocket_imgX, rocket_imgY)
+        dirt_cp = pygame.Rect((0 - scroll[0]), (HEIGHT - scroll[1] + 410), dirt_imgX, dirt_imgY)
 
-        if Rocket_x > (dirt_imgX):
-            #loop pour créer le sol en fonction de la position de la Rocket
+        if Rocket_x > (dirtX - dirt_imgX/1.5):
+            # loop pour créer le sol en fonction de la position de la Rocket
 
             dirtX =+ dirt_imgX
+            dirt_cp = pygame.Rect((0 - scroll[0]) + dirtX, (HEIGHT - scroll[1] + 410), dirt_imgX, dirt_imgY)
             screen.blit(dirt_img, (0 - scroll[0] + dirtX, HEIGHT - scroll[1] + 410))
-            print("dirt:", dirtX)
+            # print("dirt:", dirtX)
 
-        #miniMap
+        if pygame.Rect.colliderect(dirt_cp, rocket_cp):
+            # vérifie la colision entre la fusée et le sol
+
+            sim = False
+            # print('x0:', rrr.x0)
+            rrr.v0 = Vecteur(50, 100)
+            rrr.x0 = Vecteur(0, 1)
+            dirtX = dirt_imgX
+
+        # miniMap
         miniMap = pygame.Rect(WIDTH-175, 130, 160, 20)
         pygame.draw.rect(screen, GREEN,  miniMap)
         pygame.draw.circle(screen, RED, (miniRocketX,miniRocketY), 5)
         draw_text("Distance:", mini_police, WHITE, screen, WIDTH -175, 160)
-        draw_text("Vitesse:", mini_police, WHITE, screen, WIDTH - 175, 180)
+        draw_text("Vitesse:" , mini_police, WHITE, screen, WIDTH - 175, 180)
+        #pygame.draw.rect(screen, PURPLE, rocket_cp)
+        #pygame.draw.rect(screen, PURPLE, dirt_cp)
 
+        # scroll
         scroll[0] += (Rocket_x - scroll[0])/5
         scroll[1] += (Rocket_y - scroll[1])/7
 
@@ -117,13 +132,6 @@ def simulator():
             miniRocketX = Rocket_x * 0.1 + 930
             miniRocketY = Rocket_y * 0.1 + 65
             time.sleep(0.02)
-
-        if rrr.x0.y < 0:
-            sim = False
-            print('x0:', rrr.x0)
-            rrr.v0 = Vecteur(50,100)
-            rrr.x0 = Vecteur(0,1)
-            dirtX = dirt_imgX
 
         # check pour les event
         for event in pygame.event.get():
@@ -137,15 +145,14 @@ def simulator():
                 if event.key == pygame.K_SPACE:
                     sim = True
                 if event.key == pygame.K_3:
-                    Rocket_x, Rocket_y =  pygame.mouse.get_pos()
+                    Rocket_x, Rocket_y = pygame.mouse.get_pos()
                     Rocket_x -= 45
                     Rocket_y -= 50
+                if event.key == pygame.K_ESCAPE:
+                    running = False
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
 
         pygame.display.update()
         clock.tick(60)
