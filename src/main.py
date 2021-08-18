@@ -81,7 +81,7 @@ def simulator():
     miniRocketY = Rocket_y + 200
     scroll = [0, 0]
     dirtX = dirt_imgX
-
+    particles = []
     text_move = police.render('Type de mover:', True, (0, 0, 0))
 
     while running:
@@ -124,6 +124,19 @@ def simulator():
         # scroll
         scroll[0] += (Rocket_x - scroll[0])/5
         scroll[1] += (Rocket_y - scroll[1])/7
+
+
+        particles.append([[(Rocket_x + 480 - scroll[0]), (Rocket_y - scroll[1] + 555)], [random.randint(0, 20) / 10 - 1.5 , + 4], random.randint(4, 6)])
+
+        for particle in particles:
+            particle[0][0] += particle[1][0]
+            particle[0][1] += particle[1][1]
+            particle[2] -= 0.1
+            particle[1][1] += 0.1
+            pygame.draw.circle(screen, RED, [int(particle[0][0]), int(particle[0][1])], int(particle[2]))
+            if particle[2] <= 0:
+                particles.remove(particle)
+
 
         if sim == True:
             MRUA.move(g, Rocket=rrr, dt=0.25)
