@@ -3,14 +3,14 @@ import random
 
 pygame.font.init()
 
-#Variables
+# Variables
 WIDTH = 1080
 HEIGHT = 720
 running = True
 click = False
 clock = pygame.time.Clock()
 
-#colors
+# colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (220, 0, 0)
@@ -21,14 +21,14 @@ PURPLE = (120, 0, 120)
 COLOR_INACTIVE = pygame.Color('lightskyblue3')
 COLOR_ACTIVE = pygame.Color('dodgerblue2')
 
-#charcher les polices
+# charcher les polices
 police = pygame.font.Font(None, 50)
 police_subtitle = pygame.font.Font(None, 25)
 mini_police = pygame.font.Font(None, 20)
 FONT = pygame.font.Font(None, 32)
 
 
-#charcher les images
+# charcher les images
 rocket_img = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/water_rocket/water_rocket/src/img/rocket.png')
 sky_img = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/water_rocket/water_rocket/src/img/SKY.png')
 dirt_img = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/water_rocket/water_rocket/src/img/dirt.png')
@@ -38,7 +38,7 @@ dirt_imgX, dirt_imgY = dirt_img.get_size()
 
 
 def draw_text(text, font, color, surface, x, y):
-    #modules pour afficher du texte
+    # modules pour afficher du texte
 
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
@@ -47,7 +47,7 @@ def draw_text(text, font, color, surface, x, y):
 
 
 class InputBox:
-    #Inputbox de SKRX
+    # Inputbox de SKRX
     def __init__(self, x, y, w, h, text=''):
         self.rect = pygame.Rect(x, y, w, h)
         self.color = COLOR_INACTIVE
@@ -87,3 +87,17 @@ class InputBox:
         screen.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
         # Blit the rect.
         pygame.draw.rect(screen, self.color, self.rect, 2)
+
+particles = []
+def Particles(x, y, surface, color):
+    # classe particules
+
+    particles.append([[x, y], [random.randint(0, 20) / 10 - 1.5, + 4], random.randint(4, 6)])
+    for particle in particles:
+        particle[0][0] += particle[1][0]
+        particle[0][1] += particle[1][1]
+        particle[2] -= 0.1
+        particle[1][1] += 0.1
+        pygame.draw.circle(surface, color, [int(particle[0][0]), int(particle[0][1])], int(particle[2]))
+        if particle[2] <= 0:
+            particles.remove(particle)
