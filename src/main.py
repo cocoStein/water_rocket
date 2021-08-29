@@ -13,21 +13,16 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Water Rocket")
 
 
-# Rocket
-v0 = Vecteur(90, 100)
-x0 = Vecteur(0, 1)
-rrr = Rocket(v0, x0)
-g = 0
-
-
 def input():
     #module des inputs pour la simulation
 
     running = True
     click = False
-    input_box1 = InputBox(175, 100, 10, 32)
-    input_box2 = InputBox(160, 200, 100, 32)
-    input_boxes = [input_box1, input_box2]
+    input_xx = InputBox(175, 100, 10, 32)
+    input_xy = InputBox(400, 100, 10, 32)
+    input_vx = InputBox(160, 200, 10, 32)
+    input_vy = InputBox(385, 200, 10, 32)
+    input_boxes = [input_xx, input_xy, input_vx, input_vy]
 
 
     while running:
@@ -40,11 +35,12 @@ def input():
 
         if button_1.collidepoint((mx, my)):
             if click:
-                simulator()
+
                 running = True
                 click = False
-                #v0 = Vecteur(int(input_box2.text), 100)
-                #return v0
+                v0 = Vecteur(int(input_vx.text), int(input_vy.text))
+                x0 = Vecteur(int(input_xx.text), int(input_xy.text))
+                simulator(v0, x0)
 
         pygame.draw.rect(screen, GREEN, button_1)
         draw_text('Réglages de la fusée', police, WHITE, screen, 20, 20)
@@ -70,8 +66,11 @@ def input():
         pygame.display.update()
         clock.tick(60)
 
-def simulator():
+def simulator(v0, x0):
     # module de la simulation
+
+    rrr = Rocket(v0, x0)
+    g = 0
 
     sim = False
     running = True
