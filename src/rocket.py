@@ -11,7 +11,7 @@ class Rocket:
 
     def somme_f(self):
         poids = Vecteur(self.m*0, self.m*-9.81)
-        ff = Vecteur(-1/4*self.v0.x, -1/4*self.v0.y)
+        ff = -0.25*self.v0
         self.somme_f = poids + ff
         return self.somme_f
 
@@ -26,21 +26,22 @@ forces = []
 class Forces:
     def __init__(self):
         pass
-    def poids(Rocket):
-        poids = Vecteur(Rocket.m * 0, Rocket.m * -9.81)
+
+    def poids(self, rocket):
+        poids = Vecteur(rocket.m * 0, rocket.m * -9.81)
         return poids
 
-    def frottement(Rocket):
+    def frottement(self, rocket):
         frottement = Vecteur(-1/4*Rocket.v0.x, -1/4*Rocket.v0.y)
         return frottement
 
-    def sum(Rocket):
+    def sum(self, rocket):
         sum = Vecteur(0, 0)
         for force in forces:
             if force == "poids":
-                sum = Forces.poids(Rocket) + sum
-            if force == "frottement":
-                sum = Forces.frottement(Rocket) +sum
+                sum += self.poids(rocket)
+            if force == "":
+                sum += self.frottement(rocket)
         return sum
 
 
@@ -52,19 +53,16 @@ class MRUA():
         #Rocket.x0 + Rocket.v0 * dt + 0.5 * Rocket.a0 * dt * dt
 
 class PasAPas():
-    def move(self, Rocket, dt):
+    def move(self, rocket, dt):
         #type de mouvement dit Pas à Pas (version 1)
-        forces = Rocket.somme_f(self)
-        Rocket.a0 = Vecteur(forces.x / Rocket.m, forces.y / Rocket.m)
-        Rocket.v0 = Rocket.a0 * dt + Rocket.v0
-        Rocket.x0 += Rocket.v0 * dt
+        forces = rocket.somme_f()
+        rocket.a0 = Vecteur(forces.x / rocket.m, forces.y / rocket.m)
+        rocket.v0 = rocket.a0 * dt + rocket.v0
+        rocket.x0 += rocket.v0 * dt
 
 if __name__ == "__main__": #pour tester la class
     v0 = Vecteur(50,40)
     x0 = Vecteur(0,1)
     rrr = Rocket(v0,x0)
-    rrr.m = 10
-    g = 0
-    forces = ["poids", "frottement"]
-
-    print(Forces.sum(rrr))
+    method = PasAPas()
+    method.move(rrr, 0.5)

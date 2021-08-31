@@ -18,11 +18,11 @@ def input():
 
     running = True
     click = False
-    input_xx = InputBox(175, 100, 10, 32)
-    input_xy = InputBox(400, 100, 10, 32)
+    #input_xx = InputBox(175, 100, 10, 32)
+    #input_xy = InputBox(400, 100, 10, 32)
     input_vx = InputBox(160, 200, 10, 32)
     input_vy = InputBox(385, 200, 10, 32)
-    input_boxes = [input_xx, input_xy, input_vx, input_vy]
+    input_boxes = [input_vx, input_vy]
 
 
     while running:
@@ -39,7 +39,8 @@ def input():
                 running = True
                 click = False
                 v0 = Vecteur(int(input_vx.text), int(input_vy.text))
-                x0 = Vecteur(int(input_xx.text), int(input_xy.text))
+                #x0 = Vecteur(int(input_xx.text), int(input_xy.text))
+                x0 = Vecteur(1,1)
                 simulator(v0, x0)
 
         pygame.draw.rect(screen, GREEN, button_1)
@@ -74,10 +75,10 @@ def simulator(v0, x0):
 
     sim = False
     running = True
-    Rocket_x = rrr.x0.x
-    Rocket_y = rrr.x0.y + 570
-    miniRocketX = Rocket_x + 1000
-    miniRocketY = Rocket_y + 200
+    rocket_coo_x = rrr.x0.x
+    rocket_coord_y = rrr.x0.y + 570
+    miniRocketX = rocket_coo_x + 1000
+    miniRocketY = rocket_coord_y + 200
     scroll = [0, 0]
     dirtX = dirt_imgX
     text_move = police.render('Type de mover:', True, (0, 0, 0))
@@ -88,18 +89,18 @@ def simulator(v0, x0):
 
         # afficher les images
         screen.blit(dirt_img, (0 - scroll[0], HEIGHT - scroll[1] + 410))
-        screen.blit(rocket_img, (Rocket_x - scroll[0] + 450, Rocket_y - scroll[1] + 495))
+        screen.blit(rocket_img, (rocket_coo_x - scroll[0] + 450, rocket_coord_y - scroll[1] + 495))
         screen.blit(text_move, (0, 0))
-        rocket_cp = pygame.Rect(Rocket_x + 450 - scroll[0], Rocket_y - scroll[1] + 495, rocket_imgX, rocket_imgY)
+        rocket_cp = pygame.Rect(rocket_coo_x + 450 - scroll[0], rocket_coord_y - scroll[1] + 495, rocket_imgX, rocket_imgY)
         dirt_cp = pygame.Rect((0 - scroll[0]), (HEIGHT - scroll[1] + 410), dirt_imgX, dirt_imgY)
 
-        if Rocket_x > (dirtX - dirt_imgX/1.5):
+        if rocket_coo_x > (dirtX - dirt_imgX/1.5):
             # loop pour créer le sol en fonction de la position de la Rocket
 
-            dirtX =+ dirt_imgX
+            dirtX += dirt_imgX
             dirt_cp = pygame.Rect((0 - scroll[0]) + dirtX, (HEIGHT - scroll[1] + 410), dirt_imgX, dirt_imgY)
             screen.blit(dirt_img, (0 - scroll[0] + dirtX, HEIGHT - scroll[1] + 410))
-            # print("dirt:", dirtX)
+            print("dirt:", dirtX)
 
         if pygame.Rect.colliderect(dirt_cp, rocket_cp):
             # vérifie la colision entre la fusée et le sol
@@ -119,19 +120,19 @@ def simulator(v0, x0):
         #pygame.draw.rect(screen, PURPLE, rocket_cp)
         #pygame.draw.rect(screen, PURPLE, dirt_cp)
 
-        # scroll
-        scroll[0] += (Rocket_x - scroll[0])/5
-        scroll[1] += (Rocket_y - scroll[1])/7
+        # scroll (pour faire que la tous bouge en suivant la caméra)
+        scroll[0] += (rocket_coo_x - scroll[0])/5
+        scroll[1] += (rocket_coord_y - scroll[1])/7
 
 
 
         if sim == True:
             MRUA.move(g, Rocket=rrr, dt=0.25)
-            Rocket_x = rrr.x0.x
-            Rocket_y = -rrr.x0.y + 570
-            miniRocketX = Rocket_x * 0.1 + 930
-            miniRocketY = Rocket_y * 0.1 + 65
-            Particles((Rocket_x + 480 - scroll[0]), (Rocket_y - scroll[1] + 540), screen, RED)
+            rocket_coo_x = rrr.x0.x
+            rocket_coord_y = -rrr.x0.y + 570
+            miniRocketX = rocket_coo_x * 0.1 + 930
+            miniRocketY = rocket_coord_y * 0.1 + 65
+            Particles((rocket_coo_x + 480 - scroll[0]), (rocket_coord_y - scroll[1] + 540), screen, RED)
             time.sleep(0.02)
 
         # check pour les event
@@ -146,9 +147,9 @@ def simulator(v0, x0):
                 if event.key == pygame.K_SPACE:
                     sim = True
                 if event.key == pygame.K_3:
-                    Rocket_x, Rocket_y = pygame.mouse.get_pos()
-                    Rocket_x -= 45
-                    Rocket_y -= 50
+                    rocket_coo_x, rocket_coord_y = pygame.mouse.get_pos()
+                    rocket_coo_x -= 45
+                    rocket_coord_y -= 50
                 if event.key == pygame.K_ESCAPE:
                     running = False
             if event.type == pygame.QUIT:
