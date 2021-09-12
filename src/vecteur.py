@@ -40,6 +40,17 @@ class Vecteur:
 
     __rmul__ = __mul__
 
+    def __truediv__(self, other):
+        if isinstance(other, (int, float)):
+
+            return Vecteur(
+                self.x / other,
+                self.y / other
+            )
+        logging.warning("On ne peut diviser un vecteur qu'avec un nombre.")
+        raise NotImplementedError
+
+
 
 
 if __name__ == "__main__":
@@ -54,3 +65,7 @@ if __name__ == "__main__":
 
     print(v1 * v2)
     print(-v2)
+
+    print(v1/2)
+
+
