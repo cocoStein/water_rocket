@@ -1,6 +1,6 @@
 # import
-from water_rocket.src.settings import *
-from water_rocket.src.rocket import *
+from settings import *
+from rocket import *
 import pygame
 import sys
 import time
@@ -70,6 +70,7 @@ def input():
 def simulator(v0, x0):
     # module de la simulation
 
+    method = MRUA()
     rrr = Rocket(v0, x0)
     g = 0
 
@@ -83,9 +84,16 @@ def simulator(v0, x0):
     dirtX = dirt_imgX
     text_move = police.render('Type de mover:', True, (0, 0, 0))
 
+    ggg = 0
+
     while running:
         # background
         screen.blit(sky_img, (0, 0))
+
+        #afichage de la vitesse
+        gg_text = police.render(str(rrr.v0), 1, WHITE)
+        pos = [100, 100]
+        screen.blit(gg_text, pos)
 
         # afficher les images
         screen.blit(dirt_img, (0 - scroll[0], HEIGHT - scroll[1] + 410))
@@ -127,7 +135,7 @@ def simulator(v0, x0):
 
 
         if sim == True:
-            MRUA.move(g, Rocket=rrr, dt=0.25)
+            method.move(rrr, dt=0.25)
             rocket_coo_x = rrr.x0.x
             rocket_coord_y = -rrr.x0.y + 570
             miniRocketX = rocket_coo_x * 0.1 + 930
