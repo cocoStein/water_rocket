@@ -1,20 +1,27 @@
 from vecteur import Vecteur
 from math import *
+from forces import *
 
 class Rocket:
     #Definition de la fusée avec toutes les variables nécessaire au programme
-    def __init__(self, v0,x0, a0=Vecteur(0, -9.81), m=1):
+    def __init__(self, v0,x0,forces=[], a0=Vecteur(0, -9.81), m=1):
         self.x0 = x0  # position initiale (Vecteur)
         self.v0 = v0  # vitesse initiale (Vecteur)
         self.a0 = a0  # vitesse initiale (Vecteur)
         self.m = m    #masse initiale
+        self.forces = forces  #Selecteur de force
+
+    #def somme_f(self):
+    #    poids = Vecteur(self.m*0, self.m*-9.81)
+    #    ff = -0.25*self.v0
+    #    self.somme_f = poids + ff
+    #    return self.somme_f
 
     def somme_f(self):
-        poids = Vecteur(self.m*0, self.m*-9.81)
-        ff = -0.25*self.v0
-        self.somme_f = poids + ff
-        return self.somme_f
-
+        Sf = Vecteur(0,0)
+        for force in self.forces:
+               Sf = Sf + force.apply(self)
+        return Sf
     def energie(self):
         # type de mouvement avec l'énergie cinétique et potentielle
         self.v0 = sqrt(2*self.a0*self.x0)
@@ -63,7 +70,11 @@ class PasAPas():
 if __name__ == "__main__": #pour tester la class
     v0 = Vecteur(50,40)
     x0 = Vecteur(0,1)
-    rrr = Rocket(v0,x0)
+    poids = Poids()
+    frottement = Frottement()
+    
+    forces = [poids, frottement]
+    rrr = Rocket(v0,x0,forces)
     method = PasAPas()
     method.move(rrr, 0.5)
     print(rrr.x0)
