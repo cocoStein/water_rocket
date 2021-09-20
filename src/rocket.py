@@ -26,7 +26,7 @@ class Rocket:
         # type de mouvement avec l'énergie cinétique et potentielle
         self.v0 = sqrt(2*self.a0*self.x0)
         self.x0 = (self.v0*self.v0)/(2*self.a0)
-         #0.5 * self.m * self.v0 * self.v0 + self.m * self.a0 * self.x0
+        #0.5 * self.m * self.v0 * self.v0 + self.m * self.a0 * self.x0
 
 #forces = []
 #

@@ -29,9 +29,9 @@ FONT = pygame.font.Font(None, 32)
 
 
 # charcher les images
-rocket_img = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/water_rocket/water_rocket/src/img/rocket.png')
-sky_img = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/water_rocket/water_rocket/src/img/SKY.png')
-dirt_img = pygame.image.load('/Users/corentinsteinhauser/PycharmProjects/water_rocket/water_rocket/src/img/dirt.png')
+rocket_img = pygame.image.load('img/rocket.png')
+sky_img = pygame.image.load('img/SKY.png')
+dirt_img = pygame.image.load('img/dirt.png')
 
 rocket_imgX, rocket_imgY = rocket_img.get_size()
 dirt_imgX, dirt_imgY = dirt_img.get_size()
