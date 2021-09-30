@@ -72,7 +72,6 @@ def simulator(v0, x0):
 
     method = MRUA()
     rrr = Rocket(v0, x0)
-    g = 0
 
     sim = False
     running = True
@@ -81,43 +80,30 @@ def simulator(v0, x0):
     miniRocketX = rocket_coo_x + 1000
     miniRocketY = rocket_coord_y + 200
     scroll = [0, 0]
-    dirtX = dirt_imgX
     text_move = police.render('Type de mover:', True, (0, 0, 0))
 
-    ggg = 0
 
     while running:
         # background
         screen.blit(sky_img, (0, 0))
 
-        #afichage de la vitesse
-        gg_text = police.render(str(rrr.v0), 1, WHITE)
-        pos = [100, 100]
-        screen.blit(gg_text, pos)
+
 
         # afficher les images
         screen.blit(dirt_img, (0 - scroll[0], HEIGHT - scroll[1] + 410))
+        screen.blit(dirt_img, (dirt_imgX - scroll[0], HEIGHT - scroll[1] + 410))
+        screen.blit(dirt_img, (dirt_imgX*2 - scroll[0], HEIGHT - scroll[1] + 410))
+
         screen.blit(rocket_img, (rocket_coo_x - scroll[0] + 450, rocket_coord_y - scroll[1] + 495))
         screen.blit(text_move, (0, 0))
         rocket_cp = pygame.Rect(rocket_coo_x + 450 - scroll[0], rocket_coord_y - scroll[1] + 495, rocket_imgX, rocket_imgY)
-        dirt_cp = pygame.Rect((0 - scroll[0]), (HEIGHT - scroll[1] + 410), dirt_imgX, dirt_imgY)
-
-        if rocket_coo_x > (dirtX - dirt_imgX/1.5):
-            # loop pour créer le sol en fonction de la position de la Rocket
-
-            dirtX += dirt_imgX
-            dirt_cp = pygame.Rect((0 - scroll[0]) + dirtX, (HEIGHT - scroll[1] + 410), dirt_imgX, dirt_imgY)
-            screen.blit(dirt_img, (0 - scroll[0] + dirtX, HEIGHT - scroll[1] + 410))
-            print("dirt:", dirtX)
+        dirt_cp = pygame.Rect((0 - scroll[0]), (HEIGHT - scroll[1] + 410), dirt_imgX*3, dirt_imgY)
 
         if pygame.Rect.colliderect(dirt_cp, rocket_cp):
             # vérifie la colision entre la fusée et le sol
 
             sim = False
-            # print('x0:', rrr.x0)
-            rrr.v0 = Vecteur(50, 100)
-            rrr.x0 = Vecteur(0, 1)
-            dirtX = dirt_imgX
+
 
         # miniMap
         miniMap = pygame.Rect(WIDTH-175, 130, 160, 20)
@@ -125,6 +111,16 @@ def simulator(v0, x0):
         pygame.draw.circle(screen, RED, (miniRocketX,miniRocketY), 5)
         draw_text("Distance:", mini_police, WHITE, screen, WIDTH -175, 160)
         draw_text("Vitesse:", mini_police, WHITE, screen, WIDTH - 175, 180)
+
+        # affichage de la distance
+        distance_txt = mini_police.render(str(rrr.x0.x), 1, WHITE)
+        pos_dist_txt = [WIDTH - 115, 160]
+        screen.blit(distance_txt, pos_dist_txt)
+        # afichage de la vitesse
+        speed_txt = mini_police.render(str(rrr.v0), 1, WHITE)
+        pos_speed_txt = [WIDTH - 120, 180]
+        screen.blit(speed_txt, pos_speed_txt)
+
         #pygame.draw.rect(screen, PURPLE, rocket_cp)
         #pygame.draw.rect(screen, PURPLE, dirt_cp)
 
