@@ -1,3 +1,5 @@
+import time
+
 import pygame
 import random
 
@@ -101,3 +103,35 @@ def Particles(x, y, surface, color):
         pygame.draw.circle(surface, color, [int(particle[0][0]), int(particle[0][1])], int(particle[2]))
         if particle[2] <= 0:
             particles.remove(particle)
+
+forces = []
+class butForces():
+    def __init__(self, x, y, force, text=''):
+        self.rect = pygame.Rect(x, y , 30, 30)
+        self.force = force
+        self.color = WHITE
+        self.text = text
+        self.active = 0
+
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # If the user clicked on the box rect.
+            if self.rect.collidepoint(event.pos) and self.active == 0:
+                # Toggle the active variable.
+                self.color = GREEN
+                forces.append(self.force)
+                self.active = 1
+                print(forces)
+
+            else:
+                self.color = WHITE
+                forces.remove(self.force)
+                self.active = 0
+                print(forces)
+
+
+    def draw(self, screen):
+        # Blit the text.
+        draw_text(self.text, police_subtitle, WHITE, screen, self.rect.x - 10, self.rect.y + 40)
+        # Blit the rect.
+        pygame.draw.rect(screen, self.color, self.rect)

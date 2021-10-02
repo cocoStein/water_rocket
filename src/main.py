@@ -18,13 +18,12 @@ def input():
 
     running = True
     click = False
-    #input_xx = InputBox(175, 100, 10, 32)
-    #input_xy = InputBox(400, 100, 10, 32)
-    input_vx = InputBox(160, 200, 10, 32)
-    input_vy = InputBox(385, 200, 10, 32)
+    input_vx = InputBox(160, 100, 10, 32)
+    input_vy = InputBox(385, 100, 10, 32)
     input_boxes = [input_vx, input_vy]
+    poidsBut = butForces(175, 200, Poids(), "Poids")
 
-
+    forcesBut = [poidsBut]
     while running:
         screen.fill((0, 0, 0))
 
@@ -39,24 +38,33 @@ def input():
                 running = True
                 click = False
                 v0 = Vecteur(int(input_vx.text), int(input_vy.text))
-                #x0 = Vecteur(int(input_xx.text), int(input_xy.text))
-                x0 = Vecteur(1,1)
+                x0 = Vecteur(1, 1)
                 simulator(v0, x0)
 
         pygame.draw.rect(screen, GREEN, button_1)
         draw_text('Réglages de la fusée', police, WHITE, screen, 20, 20)
-        draw_text('Position:', police, WHITE, screen, 20, 100)
-        draw_text('Vitesse:', police, WHITE,screen, 20, 200)
+        draw_text('Vitesse:', police, WHITE,screen, 20, 100)
         draw_text('Lancement', police, WHITE, screen, HEIGHT/2 +5, WIDTH/2 +10)
+
+        draw_text('Forces:', police, WHITE, screen, 20, 200)
+
 
         for box in input_boxes:
             box.update()
 
         for box in input_boxes:
             box.draw(screen)
+
+        for but in forcesBut:
+            but.draw(screen)
         for event in pygame.event.get():
+            for but in forcesBut:
+                but.handle_event(event)
+                click = False
+                #print(forces)
             for box in input_boxes:
                 box.handle_event(event)
+                click = False
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
