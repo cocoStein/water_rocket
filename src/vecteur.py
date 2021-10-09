@@ -50,6 +50,11 @@ class Vecteur:
         logging.warning("On ne peut diviser un vecteur qu'avec un nombre.")
         raise NotImplementedError
 
+    def __pow__(self,other):
+        return Vecteur(
+            self.x**other,
+            self.y** other
+        )
 
 
 

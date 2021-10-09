@@ -1,15 +1,18 @@
 from math import *
 from forces import *
+from settings import *
 
 class Rocket:
     # Definition de la fusée avec toutes les variables nécessaire au programme
 
-    def __init__(self, v0, x0, forces=[], a0=Vecteur(0, -9.81), m=1):
+    def __init__(self, v0, x0, forces=[], a0=Vecteur(0, -9.81), m=1, C = 0.52, S =3.1415 * 0.05**2):
         self.x0 = x0  # position initiale (Vecteur)
         self.v0 = v0  # vitesse initiale (Vecteur)
         self.a0 = a0  # vitesse initiale (Vecteur)
         self.m = m    # masse initiale
         self.forces = forces  # Selecteur de force
+        self.C = C #coefficient de trainée
+        self.S = S #La section maximale de la fusée qui frappe l'air
 
     def somme_f(self):
         Sf = Vecteur(0,0)
@@ -40,10 +43,11 @@ if __name__ == "__main__": #pour tester la class
     v0 = Vecteur(50,40)
     x0 = Vecteur(0,1)
     poids = Poids()
-    frottement = Frottement()
+
+    trainee = Frottement()
     
-    forces = [poids, frottement]
+    forces = [poids,trainee]
     rrr = Rocket(v0,x0,forces)
     method = PasAPas()
-    method.move(rrr, 0.5)
+    method.move(rrr, 1)
     print(rrr.x0)

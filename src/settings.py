@@ -23,6 +23,26 @@ PURPLE = (120, 0, 120)
 COLOR_INACTIVE = pygame.Color('lightskyblue3')
 COLOR_ACTIVE = pygame.Color('dodgerblue2')
 
+#Information fusée C pour le coefficient et S la surface sur la base de notre fusée à eau
+cubeC = 0.8
+cubeS = 0.10**2
+
+balleC = 0.3
+balleS = 3.1415 * 0.05**2
+
+coneC = 0.5
+coneS = 3.1415 * 0.05**2
+
+cylindreC = 0.85
+cylindreS = 3.1415 * 0.05**2
+
+sphereC = 0.47
+sphereS = 3.1415 * 0.05**2
+
+pyramideC = 1.55
+pyramideS = 0.10**2
+
+
 # charcher les polices
 police = pygame.font.Font(None, 50)
 police_subtitle = pygame.font.Font(None, 25)
