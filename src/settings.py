@@ -104,7 +104,6 @@ def Particles(x, y, surface, color):
         if particle[2] <= 0:
             particles.remove(particle)
 
-forces = []
 class butForces():
     def __init__(self, x, y, force, text=''):
         self.rect = pygame.Rect(x, y , 30, 30)
@@ -112,6 +111,7 @@ class butForces():
         self.color = WHITE
         self.text = text
         self.active = 0
+        self.forces = []
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -119,15 +119,17 @@ class butForces():
             if self.rect.collidepoint(event.pos) and self.active == 0:
                 # Toggle the active variable.
                 self.color = GREEN
-                forces.append(self.force)
+                self.forces.append(self.force)
                 self.active = 1
-                print(forces)
+                print(self.forces)
+                return self.forces
 
-            else:
+            elif self.rect.collidepoint(event.pos) and self.active == 1:
                 self.color = WHITE
-                forces.remove(self.force)
+                self.forces.remove(self.force)
                 self.active = 0
-                print(forces)
+                print(self.forces)
+                return self.forces
 
 
     def draw(self, screen):
