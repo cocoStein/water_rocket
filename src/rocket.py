@@ -21,8 +21,9 @@ class Rocket:
         return Sf
     def energie(self):
         # type de mouvement avec l'énergie cinétique et potentielle
-        self.v0 = sqrt(2*self.a0*self.x0)
-        self.x0 = (self.v0*self.v0)/(2*self.a0)
+        potentielle = self.m * self.x0.y * 9.81
+        cinetique = 0.5 * self.m * self.v0.norme()**2
+        return potentielle + cinetique
 
 class MRUA():
     def move(self, rocket, dt):
@@ -49,5 +50,6 @@ if __name__ == "__main__": #pour tester la class
     forces = [poids,trainee]
     rrr = Rocket(v0,x0,forces)
     method = PasAPas()
-    method.move(rrr, 1)
+    method.move(rrr,2)
     print(rrr.x0)
+    print(rrr.energie())

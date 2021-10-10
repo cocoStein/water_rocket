@@ -1,4 +1,5 @@
 import logging
+from math import *
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
@@ -55,6 +56,10 @@ class Vecteur:
             self.x**other,
             self.y** other
         )
+    def norme(self):
+        return sqrt(self.x**2 + self.y**2)
+
+
 
 
 
@@ -72,5 +77,7 @@ if __name__ == "__main__":
     print(-v2)
 
     print(v1/2)
+    print(v1**2)
 
 
+    print(v1.norme())
