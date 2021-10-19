@@ -7,7 +7,7 @@ class Poids():
 
 class Frottement():
     def apply(self, rocket):
-        return -(0.5 * rocket.C * rocket.S * 1.21 * rocket.v0**2)
+        return -(rocket.v0**2 * 0.5 * rocket.C * rocket.S * 1.21  )
 
 if __name__ == "__main__":
     print("hello")

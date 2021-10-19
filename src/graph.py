@@ -1,28 +1,26 @@
 from water_rocket.src.vecteur import Vecteur
 import matplotlib.pyplot as plt
-from water_rocket.src.rocket import *
+from rocket import *
 import logging
 
 logging.getLogger('matplotlib.font_manager').disabled = True    #enleve les debugs de font de mathplotlib
 
+v0 = Vecteur(50, 40)
+x0 = Vecteur(0, 1)
 
-x0 = Vecteur(0, 0)
-v0 = Vecteur(21, 45)
 
-xt = x0
+poids = Poids()
+trainee = Frottement()
 
-stuck1 = Rocket(v0,x0)
-time = 0
-stuck1.t = 0.5
+forces = [poids, trainee]
+method = PasAPas()
+method1 = MRUA()
 
-stuck2 = Rocket(v0,x0)
-stuck2.t = 0
-stuck2Energie = Rocket(v0,xt)
-
-stuck3 = Rocket(v0,x0)
-stuck3.t = 0.5
-time3 = 0
-
+f1 = Rocket(v0, x0, forces, m=0.5)
+f2 = Rocket(v0, x0, forces, m=0.5, C=cubeC, S=cubeS)
+f3 = Rocket(v0, x0, forces, m=0.5, C=balleC, S=balleS)
+f4 = Rocket(v0, x0, forces, m=0.5, C=coneC, S=coneS)
+f5 = Rocket(v0, x0, forces, m=0.5, C=cylindreC, S=cylindreS)
 
 
 
@@ -34,41 +32,44 @@ i = [0]
 k = [0]
 
 p = [0]
-l = [stuck3.energie()]
+l = [0]
 
 n = [0]
-m = [stuck2.energie()]
+m = [0]
 
+b = [0]
+d = [0]
 
-while stuck2Energie.x0.y >= 0:
-    stuck2Energie.x0 = MRUA.mrua(stuck2)
-    stuck2.t += 0.2
-    x.append(stuck2Energie.x0.x)
-    y.append(stuck2Energie.x0.y)
-    #print(xt)
-    nrj = stuck2Energie.energie()
-    time += stuck2.t
-    n.append(time)
-    m.append(nrj)
+while f1.x0.y >= 0:
+    method.move(f1, 0.2)
+    x.append(f1.x0.x)
+    y.append(f1.x0.y)
 
-while stuck3.x0.y >= 0:
-    stuck3.x0 = PasAPas.pas_a_pas(stuck3)
-    i.append(stuck3.x0.x)
-    k.append(stuck3.x0.y)
-    #print(stuck3.x0)
-    aaa = stuck3.energie()
-    time3 += stuck3.t
-    p.append(time3)
-    l.append(aaa)
-    print(aaa)
+while f2.x0.y >= 0:
+    method.move(f2, 0.2)
+    i.append(f2.x0.x)
+    k.append(f2.x0.y)
 
-plt.figure(1)
-plt.plot(x, y, '-', color='blue')
-plt.plot(i, k, '-ok', color='black')
+while f3.x0.y >= 0:
+    method.move(f3, 0.2)
+    p.append(f3.x0.x)
+    l.append(f3.x0.y)
 
-plt.figure(2)
-plt.plot(p, l, '-', color='black')
-plt.figure(3)
-plt.plot(n, m, '-', color='blue')
+while f4.x0.y >= 0:
+    method.move(f4, 0.2)
+    n.append(f4.x0.x)
+    m.append(f4.x0.y)
+
+while f5.x0.y >= 0:
+    method.move(f5, 0.2)
+    b.append(f5.x0.x)
+    d.append(f5.x0.y)
+
+plt.plot(x, y, 'b')
+plt.plot(i, k, 'r')
+plt.plot(p, l, 'k')
+plt.plot(n, m, 'g')
+plt.plot(b, d, 'm')
 
 plt.show()
+

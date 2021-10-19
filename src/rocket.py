@@ -1,4 +1,3 @@
-from math import *
 from forces import *
 from settings import *
 
@@ -50,6 +49,7 @@ if __name__ == "__main__": #pour tester la class
     forces = [poids,trainee]
     rrr = Rocket(v0,x0,forces)
     method = PasAPas()
-    method.move(rrr,2)
-    print(rrr.x0)
+    method.move(rrr, 0.5)
+    print(rrr.v0)
+
     print(rrr.energie())

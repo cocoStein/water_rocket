@@ -45,7 +45,6 @@ def input():
         draw_text('Réglages de la fusée', police, WHITE, screen, 20, 20)
         draw_text('Vitesse:', police, WHITE,screen, 20, 100)
         draw_text('Lancement', police, WHITE, screen, HEIGHT/2 +5, WIDTH/2 +10)
-
         draw_text('Forces:', police, WHITE, screen, 20, 200)
 
 
@@ -88,6 +87,7 @@ def simulator(v0, x0):
     miniRocketX = rocket_coo_x + 1000
     miniRocketY = rocket_coord_y + 200
     scroll = [0, 0]
+    angle_rot = 0
     text_move = police.render('Type de mover:', True, (0, 0, 0))
 
 
@@ -102,7 +102,7 @@ def simulator(v0, x0):
         screen.blit(dirt_img, (dirt_imgX - scroll[0], HEIGHT - scroll[1] + 410))
         screen.blit(dirt_img, (dirt_imgX*2 - scroll[0], HEIGHT - scroll[1] + 410))
 
-        screen.blit(rocket_img, (rocket_coo_x - scroll[0] + 450, rocket_coord_y - scroll[1] + 495))
+        screen.blit(Rot_center(rocket_img, angle_rot), (rocket_coo_x - scroll[0] + 450, rocket_coord_y - scroll[1] + 495))
         screen.blit(text_move, (0, 0))
         rocket_cp = pygame.Rect(rocket_coo_x + 450 - scroll[0], rocket_coord_y - scroll[1] + 495, rocket_imgX, rocket_imgY)
         dirt_cp = pygame.Rect((0 - scroll[0]), (HEIGHT - scroll[1] + 410), dirt_imgX*3, dirt_imgY)
@@ -145,6 +145,7 @@ def simulator(v0, x0):
             miniRocketX = rocket_coo_x * 0.1 + 930
             miniRocketY = rocket_coord_y * 0.1 + 65
             Particles((rocket_coo_x + 480 - scroll[0]), (rocket_coord_y - scroll[1] + 540), screen, RED)
+            angle_rot += 5
             time.sleep(0.02)
 
         # check pour les event
