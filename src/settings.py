@@ -1,5 +1,3 @@
-import time
-
 import pygame
 import random
 from forme import *
@@ -12,6 +10,7 @@ HEIGHT = 720
 running = True
 click = False
 clock = pygame.time.Clock()
+
 
 # colors
 WHITE = (255, 255, 255)
@@ -74,7 +73,6 @@ dirt_img = pygame.image.load('img/dirt.png')
 
 rocket_imgX, rocket_imgY = rocket_img.get_size()
 dirt_imgX, dirt_imgY = dirt_img.get_size()
-
 
 def draw_text(text, font, color, surface, x, y):
     # modules pour afficher du texte
@@ -174,3 +172,11 @@ class butForces():
         draw_text(self.text, police_subtitle, WHITE, screen, self.rect.x - 10, self.rect.y + 40)
         # Blit the rect.
         pygame.draw.rect(screen, self.color, self.rect)
+
+def Rot_center(image, angle):
+    orig_rect = image.get_rect()
+    rot_image = pygame.transform.rotate(image, angle)
+    rot_rect = orig_rect.copy()
+    rot_rect.center = rot_image.get_rect().center
+    rot_image = rot_image.subsurface(rot_rect).copy()
+    return rot_image

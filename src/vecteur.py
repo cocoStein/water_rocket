@@ -54,7 +54,7 @@ class Vecteur:
     def __pow__(self,other):
         return Vecteur(
             self.x**other,
-            self.y** other
+            self.y**other
         )
     def norme(self):
         return sqrt(self.x**2 + self.y**2)
