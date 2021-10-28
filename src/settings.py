@@ -2,6 +2,7 @@ import time
 
 import pygame
 import random
+from forme import *
 
 pygame.font.init()
 
@@ -26,22 +27,38 @@ COLOR_ACTIVE = pygame.Color('dodgerblue2')
 #Information fusée C pour le coefficient et S la surface sur la base de notre fusée à eau
 cubeC = 0.8
 cubeS = 0.10**2
+cubeVolume = (0.10**2) * 0.38 #La même hauteur que la bouteille
+cube = Forme(cubeC,cubeS,cubeVolume)
 
 balleC = 0.3
 balleS = 3.1415 * 0.05**2
+balleVolume = 3.1415 * (0.05**2) * 0.30 + 1/3 * 3.1415 * 0.08 * 0.05**2
+balle = Forme(balleC,balleS,balleVolume)
 
 coneC = 0.5
 coneS = 3.1415 * 0.05**2
+coneVolume = 3.1415 * 0.38 * 0.05**2
+cone = Forme(coneC,coneS,coneVolume)
 
 cylindreC = 0.85
 cylindreS = 3.1415 * 0.05**2
+cylindreVolume = 3.1415 * (0.05**2) * 0.38
+cylindre = Forme(cylindreC,cylindreS,cylindreVolume)
 
 sphereC = 0.47
 sphereS = 3.1415 * 0.05**2
+sphereVolume = 4/3 * 3.1415 * 0.05**3
+sphere = Forme(sphereC,sphereS,sphereVolume)
 
 pyramideC = 1.55
 pyramideS = 0.10**2
+pyramideVolume = 1/3 * (0.10**2) * 0.38
+pyramide = Forme(pyramideC,pyramideS,pyramideVolume)
 
+bouteilleC = 0.52
+bouteilleS =3.1415 * 0.05**2
+bouteilleVolume = 0.002
+bouteille = Forme(bouteilleC,bouteilleS,bouteilleVolume)
 
 # charcher les polices
 police = pygame.font.Font(None, 50)
