@@ -1,7 +1,7 @@
 from vecteur import *
 from settings import *
 from rocket import*
-import matplotlib.pyplot as plt
+
 
 
 class Poids():
@@ -26,7 +26,10 @@ class Poussee():
          if volume0 == volume1:
              F = 0
 
-         return Vecteur(F* 0.0001/4,F*3.9999/4)
+         return Vecteur(F* 0.2,F*0.8)
+class Archimède():
+    def apply(self,rocket,dt = 0):
+        return Vecteur(0,1.21 * rocket.forme.volume * 9.81)
 
 
 if __name__ == "__main__":
