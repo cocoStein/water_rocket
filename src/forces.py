@@ -6,30 +6,55 @@ from rocket import*
 
 class Poids():
     def apply(self, rocket,dt=0):
+        """
+        Retourne  la force gravitationnelle de la rocket
+        :param rocket: Rocket
+        :param dt: float
+        :return: Vecteur
+        """
         return Vecteur(rocket.masse()*0, rocket.masse()*-9.81)
 
 
 class Frottement():
     def apply(self, rocket,dt = 0):
-        return  -(0.5 * rocket.forme.C * rocket.forme.S * 1.21 * (rocket.v0**2))
+        """
+        Retourne la force de trainée de la rocket
+        :param rocket: Rocket
+        :param dt: float
+        :return: Vecteur
+        """
+        return  0.5 * rocket.forme.C * rocket.forme.S * 1.21 * -(rocket.v0.autoMul())
+
 class Poussee():
     def apply(self,rocket,dt = 0):
-         
-         volume0 = rocket.forme.volume-rocket.volumeWater()
+        """
+        Retourne la force de poussée de la rocket
+        :param rocket: Rocket
+        :param dt: float
+        :return: Vecteur
+        """
 
-         rocket.masseTime(dt)
-         volume1 = rocket.forme.volume-rocket.volumeWater()
+        volume0 = rocket.forme.volume-rocket.volumeWater()
 
-         rocket.P = rocket.P * volume0 / volume1
+        rocket.masseTime(dt)
+        volume1 = rocket.forme.volume-rocket.volumeWater()
 
-         F = rocket.P * 0.00346 #aire du bouchon de la bouteille
-         if volume0 == volume1:
-             F = 0
+        rocket.P = rocket.P * volume0 / volume1
 
-         return Vecteur(F* 0.2,F*0.8)
-class Archimède():
-    def apply(self,rocket,dt = 0):
-        return Vecteur(0,1.21 * rocket.forme.volume * 9.81)
+        F = rocket.P * 0.00346 #aire du bouchon de la bouteille
+        if volume0 == volume1:
+            F = 0
+
+        return Vecteur(F* 0.2,F*0.8)
+class Archimede():
+   def apply(self,rocket,dt = 0):
+       """
+        Retourne  la poussée d'archimède sur la rocket
+        :param rocket: Rocket
+        :param dt: float
+        :return: Vecteur
+        """
+        return Vecteur(0 ,  1.21 * rocket.volumeWater() * 9.81)
 
 
 if __name__ == "__main__":
