@@ -98,7 +98,7 @@ class Vecteur:
         :return: Vecteur
         """
         return Vecteur(
-            self.x *abs(self.x),
+            self.x * abs(self.x),
             self.y * abs(self.y)
         )
 

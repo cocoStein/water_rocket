@@ -16,7 +16,7 @@ class Poids():
 
 
 class Frottement():
-    def apply(self, rocket,dt = 0):
+    def apply(self, rocket, dt = 0):
         """
         Retourne la force de trainée de la rocket
         :param rocket: Rocket
@@ -26,7 +26,7 @@ class Frottement():
         return  0.5 * rocket.forme.C * rocket.forme.S * 1.21 * -(rocket.v0.autoMul())
 
 class Poussee():
-    def apply(self,rocket,dt = 0):
+    def apply(self, rocket, dt = 0):
         """
         Retourne la force de poussée de la rocket
         :param rocket: Rocket
