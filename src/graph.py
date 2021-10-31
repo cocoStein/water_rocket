@@ -5,28 +5,31 @@ import logging
 
 logging.getLogger('matplotlib.font_manager').disabled = True    #enleve les debugs de font de mathplotlib
 
-v0 = Vecteur(50, 40)
+v0 = Vecteur(13.5, 49)
 x0 = Vecteur(0, 1)
 
+#toutes formes
 
 poids = Poids()
 trainee = Frottement()
+poussee = Poussee()
+archimede = Archimede()
 
-forces = [poids, trainee]
+forces = [poussee, poids, trainee]
 method = PasAPas()
 method1 = MRUA()
 
-f1 = Rocket(v0, x0, forces, m=0.5)
-f2 = Rocket(v0, x0, forces, m=0.5, C=cubeC, S=cubeS)
-f3 = Rocket(v0, x0, forces, m=0.5, C=balleC, S=balleS)
-f4 = Rocket(v0, x0, forces, m=0.5, C=coneC, S=coneS)
-f5 = Rocket(v0, x0, forces, m=0.5, C=cylindreC, S=cylindreS)
+f1 = Rocket(Vecteur(0, 0), x0, forces,)
+f2 = Rocket(v0, x0, forces,)
+f3 = Rocket(v0, x0, forces, forme=cone)
+f4 = Rocket(v0, x0, forces, forme=cylindre)
+f5 = Rocket(v0, x0, forces, forme=pyramide)
 
 
 
 
-x = [0]
-y = [0]
+x = []
+y = []
 
 i = [0]
 k = [0]
@@ -40,13 +43,17 @@ m = [0]
 b = [0]
 d = [0]
 
+t = 0
 while f1.x0.y >= 0:
-    method.move(f1, 0.2)
-    x.append(f1.x0.x)
-    y.append(f1.x0.y)
+    y.append(0)
+    x.append(t)
+    t += 0.2
+    method1.move(f1, 0.2)
+
+
 
 while f2.x0.y >= 0:
-    method.move(f2, 0.2)
+    method1.move(f2, 0.2)
     i.append(f2.x0.x)
     k.append(f2.x0.y)
 
@@ -65,11 +72,12 @@ while f5.x0.y >= 0:
     b.append(f5.x0.x)
     d.append(f5.x0.y)
 
-plt.plot(x, y, 'b')
-plt.plot(i, k, 'r')
-plt.plot(p, l, 'k')
-plt.plot(n, m, 'g')
-plt.plot(b, d, 'm')
+plt.plot(x, y, 'b', label="Energie")
+#plt.plot(i, k, 'r', label="MUA")
+#plt.plot(p, l, 'k', label="cone")
+#plt.plot(n, m, 'g', label="cylindre")
+#plt.plot(b, d, 'm', label="pyramide")
 
+
+plt.legend()
 plt.show()
-

@@ -48,7 +48,7 @@ class Poussee():
         return Vecteur(F* 0.2,F*0.8)
 class Archimede():
    def apply(self,rocket,dt = 0):
-       """
+        """
         Retourne  la poussée d'archimède sur la rocket
         :param rocket: Rocket
         :param dt: float

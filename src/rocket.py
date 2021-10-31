@@ -2,6 +2,7 @@ from math import *
 from forces import *
 from settings import *
 
+
 class Rocket:
     # Definition de la fusée avec toutes les variables nécessaire au programme
 
@@ -90,24 +91,24 @@ class PasAPas():
         rocket.x0 += rocket.v0 * dt
 
 if __name__ == "__main__": #pour tester la class
-    v0 = Vecteur(8,18)
-    x0 = Vecteur(0,1)
+    v0 = Vecteur(0, 0)
+    x0 = Vecteur(0, 1)
     poids = Poids()
     poussee = Poussee()
     trainee = Frottement()
     archimede = Archimede()
 
-    forces = [poids]
-    rrr = Rocket(v0,x0, forces)
+    forces = [poussee, poids]
+    rrr = Rocket(v0, x0, forces)
     pas = PasAPas()
-    rrr2 = Rocket(v0,x0, forces)
+    rrr2 = Rocket(v0, x0, forces)
     mua = MRUA()
 
     for i in range(10):
-        pas.move(rrr,0.2)
-        mua.move(rrr2,0.2)
+        pas.move(rrr, 0.2)
+        mua.move(rrr2, 0.2)
         print("-----------------")
-        print(rrr.x0)
+        print(rrr.v0)
         print(rrr2.x0)
 
 
