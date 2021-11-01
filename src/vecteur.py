@@ -104,7 +104,6 @@ class Vecteur:
 
 
 
-
 if __name__ == "__main__":
     v1 = Vecteur(2,3)
     v2 = Vecteur(4,-3)

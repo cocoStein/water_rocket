@@ -27,7 +27,6 @@ f5 = Rocket(v0, x0, forces, forme=pyramide)
 
 
 
-
 x = []
 y = []
 

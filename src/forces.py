@@ -69,4 +69,3 @@ if __name__ == "__main__":
     rrr = Rocket(v0,x0,forces,mCarburant = 1)
 
     print(poussee.apply(rrr,0.2),poids.apply(rrr,0.2),frottement.apply(rrr,0.2))
-

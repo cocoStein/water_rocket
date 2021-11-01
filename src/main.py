@@ -7,7 +7,6 @@ import time
 
 pygame.init()
 
-
 # création de la fenêtre
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Water Rocket")

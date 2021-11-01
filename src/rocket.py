@@ -110,7 +110,3 @@ if __name__ == "__main__": #pour tester la class
         print("-----------------")
         print(rrr.v0)
         print(rrr2.x0)
-
-
-
-
