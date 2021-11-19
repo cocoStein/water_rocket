@@ -63,11 +63,27 @@ bouteille = Forme(bouteilleC,bouteilleS,bouteilleVolume)
 police = pygame.font.Font(None, 50)
 police_subtitle = pygame.font.Font(None, 25)
 mini_police = pygame.font.Font(None, 20)
+mega_police = pygame.font.Font(None, 150)
 FONT = pygame.font.Font(None, 32)
 
 
 # charcher les images
 rocket_img = pygame.image.load('img/rocket.png')
+rocket_img_balle = pygame.image.load('img/rocket_balle.png')
+rocket_img_cone = pygame.image.load('img/rocket_cone.png')
+rocket_img_cube = pygame.image.load('img/rocket_cube.png')
+rocket_img_sphere = pygame.image.load('img/rocket_sphere.png')
+rocket_img_cylindre = pygame.image.load('img/rocket_cylindre.png')
+rocket_img_pyramide = pygame.image.load('img/rocket_pyramide.png')
+
+# Tranformations des images
+rocket_img_balle = pygame.transform.scale(rocket_img_balle, (64, 64))
+rocket_img_cone = pygame.transform.scale(rocket_img_cone, (64, 64))
+rocket_img_cube = pygame.transform.scale(rocket_img_cube, (64, 64))
+rocket_img_sphere = pygame.transform.scale(rocket_img_sphere, (64, 64))
+rocket_img_cylindre = pygame.transform.scale(rocket_img_cylindre, (64, 64))
+rocket_img_pyramide = pygame.transform.scale(rocket_img_pyramide, (64, 64))
+
 sky_img = pygame.image.load('img/SKY.png')
 dirt_img = pygame.image.load('img/dirt.png')
 
@@ -139,43 +155,14 @@ def Particles(x, y, surface, color):
         if particle[2] <= 0:
             particles.remove(particle)
 
-forces = []
-class butForces():
-    def __init__(self, x, y, force, text=''):
-        self.rect = pygame.Rect(x, y , 30, 30)
-        self.force = force
-        self.color = WHITE
-        self.text = text
-        self.active = 0
 
-    def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            # If the user clicked on the box rect.
-            if self.rect.collidepoint(event.pos) and self.active == 0:
-                # Toggle the active variable.
-                self.color = GREEN
-                forces.append(self.force)
-                self.active = 1
-
-            elif self.rect.collidepoint(event.pos) and self.active == 1:
-                self.color = WHITE
-                forces.remove(self.force)
-                self.active = 0
-
-
-    def draw(self, screen):
-        # Blit the text.
-        draw_text(self.text, police_subtitle, WHITE, screen, self.rect.x - 10, self.rect.y + 40)
-        # Blit the rect.
-        pygame.draw.rect(screen, self.color, self.rect)
-
-methode = []
-class butMethode():
-    def __init__(self, x, y, nomMethode, text=''):
+class buttons():
+    def __init__(self, x, y, nomMethode, list, text=''):
         self.rect = pygame.Rect(x, y , 30, 30)
         self.nomMethode = nomMethode
         self.color = WHITE
         self.text = text
+        self.list = list
         self.active = 0
 
     def handle_event(self, event):
@@ -185,11 +172,11 @@ class butMethode():
                 # Toggle the active variable.
                 self.color = GREEN
                 self.active = 1
-                methode.append(self.nomMethode)
+                self.list.append(self.nomMethode)
 
             elif self.rect.collidepoint(event.pos) and self.active == 1:
                 self.color = WHITE
-                methode.remove(self.nomMethode)
+                self.list.remove(self.nomMethode)
                 self.active = 0
 
 
