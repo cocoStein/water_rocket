@@ -23,7 +23,7 @@ PURPLE = (120, 0, 120)
 COLOR_INACTIVE = pygame.Color('lightskyblue3')
 COLOR_ACTIVE = pygame.Color('dodgerblue2')
 
-#Information fusée C pour le coefficient et S la surface sur la base de notre fusée à eau
+# Information fusée C pour le coefficient et S la surface sur la base de notre fusée à eau
 cubeC = 0.8
 cubeS = 0.10**2
 cubeVolume = (0.10**2) * 0.38 #La même hauteur que la bouteille
@@ -68,7 +68,8 @@ FONT = pygame.font.Font(None, 32)
 
 
 # charcher les images
-rocket_img = pygame.image.load('img/rocket.png')
+rocket_img = pygame.image.load('img/rocket_bouteille.png')
+rocket_img_bouteille = pygame.image.load('img/rocket_bouteille.png')
 rocket_img_balle = pygame.image.load('img/rocket_balle.png')
 rocket_img_cone = pygame.image.load('img/rocket_cone.png')
 rocket_img_cube = pygame.image.load('img/rocket_cube.png')
@@ -77,6 +78,7 @@ rocket_img_cylindre = pygame.image.load('img/rocket_cylindre.png')
 rocket_img_pyramide = pygame.image.load('img/rocket_pyramide.png')
 
 # Tranformations des images
+rocket_img_bouteille = pygame.transform.scale(rocket_img_bouteille, (64, 64))
 rocket_img_balle = pygame.transform.scale(rocket_img_balle, (64, 64))
 rocket_img_cone = pygame.transform.scale(rocket_img_cone, (64, 64))
 rocket_img_cube = pygame.transform.scale(rocket_img_cube, (64, 64))
@@ -90,6 +92,11 @@ dirt_img = pygame.image.load('img/dirt.png')
 rocket_imgX, rocket_imgY = rocket_img.get_size()
 dirt_imgX, dirt_imgY = dirt_img.get_size()
 
+# Variables pour le placement des images
+dirt_placementY = 410
+rocket_placementX = 450
+
+
 def draw_text(text, font, color, surface, x, y):
     # modules pour afficher du texte
 
@@ -100,7 +107,7 @@ def draw_text(text, font, color, surface, x, y):
 
 
 class InputBox:
-    # Inputbox de SKRX
+    # Inputbox de SKRX trouver sur GitHub
     def __init__(self, x, y, w, h, text=''):
         self.rect = pygame.Rect(x, y, w, h)
         self.color = COLOR_INACTIVE
@@ -122,7 +129,7 @@ class InputBox:
             if self.active:
                 if event.key == pygame.K_RETURN:
                     print(self.text)
-                    #self.text = ''
+                    self.text = ''
                 elif event.key == pygame.K_BACKSPACE:
                     self.text = self.text[:-1]
                 else:

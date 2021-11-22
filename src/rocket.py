@@ -9,12 +9,12 @@ class Rocket:
     def __init__(self, v0, x0, forces=[], a0=Vecteur(0, -9.81), forme = bouteille, mRocket=0.1, mCarburant = 0.5, P = 10000 ):
         self.x0 = x0  # position initiale (Vecteur)
         self.v0 = v0  # vitesse initiale (Vecteur)
-        self.a0 = a0  # vitesse initiale (Vecteur)
-        self.forces = forces  # Selecteur de force
-        self.forme = forme  #forme de la fusée (c'est une classe)
-        self.mRocket = mRocket #masse de la rocket sans le carburant
-        self.mCarburant = mCarburant #masse du carburant
-        self.P = P #pression dans la bouteille en pascal
+        self.a0 = a0  # acceleration initiale (Vecteur)
+        self.forces = forces  # Liste pour le selecteur de force
+        self.forme = forme  # Forme de la fusée (c'est une classe)
+        self.mRocket = mRocket # Masse de la rocket sans le carburant
+        self.mCarburant = mCarburant # Masse du carburant
+        self.P = P # Pression dans la bouteille en pascal
     def somme_f(self,dt = 0):
         """
         Retourne la somme des forces qui aggisent sur la rocket à un moment

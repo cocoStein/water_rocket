@@ -4,6 +4,7 @@ from rocket import *
 import pygame
 import sys
 import time
+import json
 
 pygame.init()
 pygame.time.set_timer(pygame.USEREVENT, 1000)
@@ -12,7 +13,6 @@ pygame.time.set_timer(pygame.USEREVENT, 1000)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Water Rocket")
 
-
 def input():
     #module des inputs pour la simulation
 
@@ -20,9 +20,11 @@ def input():
     click = False
 
     # Boutons vitesse
-    input_vx = InputBox(160, 100, 10, 32)
-    input_vy = InputBox(385, 100, 10, 32)
-    input_boxes = [input_vx, input_vy]
+    input_vx = InputBox(160, 100, 10, 32, "0")
+    input_vy = InputBox(395, 100, 10, 32, "0")
+
+    input_name = InputBox(790, 100, 10, 32, "")
+    input_boxes = [input_vx, input_vy, input_name]
 
     # Boutons formes
     formes = []
@@ -50,7 +52,7 @@ def input():
     pasapasBut = buttons(275, 200, PasAPas(), methode, "Pas à pas")
     methodeBut = [mruaBut, pasapasBut]
 
-    #maxX0 = []
+    maxX0 = []
     maxY0 = []
 
     while running:
@@ -59,35 +61,42 @@ def input():
         # obtenir la position de la souris
         mx, my = pygame.mouse.get_pos()
 
-        button_1 = pygame.Rect(HEIGHT/2, WIDTH/2, 295, 50)
+        button_lancement = pygame.Rect(HEIGHT/2 + 75, WIDTH/2, 200, 50)
 
-        if button_1.collidepoint((mx, my)):
+        if button_lancement.collidepoint((mx, my)):
             if click:
+
+                v0 = Vecteur(int(input_vx.text), int(input_vy.text))
+                x0 = Vecteur(1, 1)
+                text_name = input_name.text
+                #draw_text("Ceci n'est pas une valeur acceptée pour cette simulation", police, RED, screen, 20, 300)
 
                 click = False
                 running = True
-                v0 = Vecteur(int(input_vx.text), int(input_vy.text))
-                x0 = Vecteur(1, 1)
-
 
                 rocket_mini_sim = Rocket(v0, x0)
+
                 #while rocket_mini_sim.x0.y >= 0:
                 #    methode[0].move(rocket_mini_sim, dt=0.2)
                 #    maxX0.append(rocket_mini_sim.x0.x)
                 #    maxY0.append(rocket_mini_sim.x0.y)
 
-                maxY0.sort()
+                #maxY0.sort()
                 #x0max = maxX0[-1]
                 #y0max = maxY0[-1]
-                #print(x0max, y0max)
-                x0max, y0max = 0,0
-                # lance la simulation
-                simulator(v0, x0, x0max, y0max, methode, forces, formes)
+                x0max, y0max = 1,1
 
-        pygame.draw.rect(screen, GREEN, button_1)
+                # lance la simulation
+                simulator(v0, x0, x0max, y0max, methode, forces, formes, text_name)
+
+        pygame.draw.rect(screen, GREEN, button_lancement)
         draw_text('Réglages de la fusée', police, WHITE, screen, 20, 20)
         draw_text('Vitesse:', police, WHITE,screen, 20, 100)
-        draw_text('Lancement', police, WHITE, screen, HEIGHT/2 +5, WIDTH/2 +10)
+        draw_text('x', police, WHITE, screen, 365, 100)
+        draw_text('y', police, WHITE, screen, 600, 100)
+
+        draw_text('Nom:', police, WHITE, screen, 700, 100)
+        draw_text('Lancement', police, WHITE, screen, HEIGHT/2 + 80, WIDTH/2 +10)
         draw_text('Méthodes:', police, WHITE, screen, 20, 200)
         draw_text('Formes:', police, WHITE, screen, 20, 300)
         draw_text('Forces:', police, WHITE, screen, 20, 400)
@@ -126,26 +135,41 @@ def input():
         pygame.display.update()
         clock.tick(60)
 
-def simulator(v0, x0, x0max, y0max, methode, forces, formes):
+def simulator(v0, x0, x0max, y0max, methode, forces, formes, text_name):
     # module de la simulation
 
+    # Variables pour la fusée
     rrr = Rocket(v0, x0, forces, forme=formes[0])
     methode = methode[0]
 
-
+    # Booleans pour la simulation
     sim = False
     running = True
     max_haut = False
+
+    # Json
+    data = {}
+    data['name'] = str(text_name)
+    data['forme'] = str(formes)
+    data['x0max'] = str(x0max)
+
+    with open('data.json', 'a') as json_file:
+        json.dump(data, json_file, indent=4, sort_keys=True)
+
+    # Coordonées pour la simulations
     rocket_coo_x = rrr.x0.x
     rocket_coord_y = rrr.x0.y + 570
     miniRocketX = rocket_coo_x + 1000
     miniRocketY = (rocket_coord_y + 200)
+
     scroll = [0, 0]
     angle_rot = 0
     max_haut_x = 0
     counter, text = 3, '3'
 
-    if formes[0] == balle:
+    if formes[0] == bouteille:
+        rocket_img = rocket_img_bouteille
+    elif formes[0] == balle:
         rocket_img = rocket_img_balle
     elif formes[0] == cone:
         rocket_img = rocket_img_cone
@@ -162,31 +186,32 @@ def simulator(v0, x0, x0max, y0max, methode, forces, formes):
         # background
         screen.blit(sky_img, (0, 0))
 
+        # afficher les sprites
+        screen.blit(dirt_img, (0 - scroll[0], HEIGHT - scroll[1] + dirt_placementY))
+        screen.blit(dirt_img, (dirt_imgX - scroll[0], HEIGHT - scroll[1] + dirt_placementY))
+        screen.blit(dirt_img, (dirt_imgX * 2 - scroll[0], HEIGHT - scroll[1] + dirt_placementY))
+        screen.blit(Rot_center(rocket_img, angle_rot), (rocket_coo_x - scroll[0] + rocket_placementX, rocket_coord_y - scroll[1] + 495))
 
-
-        # afficher les images
-        screen.blit(dirt_img, (0 - scroll[0], HEIGHT - scroll[1] + 410))
-        screen.blit(dirt_img, (dirt_imgX - scroll[0], HEIGHT - scroll[1] + 410))
-        screen.blit(dirt_img, (dirt_imgX*2 - scroll[0], HEIGHT - scroll[1] + 410))
-
-        screen.blit(Rot_center(rocket_img, angle_rot), (rocket_coo_x - scroll[0] + 450, rocket_coord_y - scroll[1] + 495))
-        rocket_cp = pygame.Rect(rocket_coo_x + 450 - scroll[0], rocket_coord_y - scroll[1] + 495, rocket_imgX, rocket_imgY)
-        dirt_cp = pygame.Rect((0 - scroll[0]), (HEIGHT - scroll[1] + 410), dirt_imgX*3, dirt_imgY)
+        # Hitbox pour le sol et la fusée
+        rocket_cp = pygame.Rect(rocket_coo_x + rocket_placementX - scroll[0], rocket_coord_y - scroll[1] + 495, 64, 64)
+        dirt_cp = pygame.Rect((0 - scroll[0]), (HEIGHT - scroll[1] + dirt_placementY), dirt_imgX * 3, dirt_imgY)
 
         if pygame.Rect.colliderect(dirt_cp, rocket_cp):
-            # vérifie la colision entre la fusée et le sol
+                # vérifie la colision entre la fusée et le sol
 
-            sim = False
+                sim = False
 
 
         # miniMap
         miniMap = pygame.Rect(WIDTH-175, 130, 160, 20)
+
         pygame.draw.rect(screen, GREEN,  miniMap)
         pygame.draw.circle(screen, RED, (miniRocketX, miniRocketY), 5)
         draw_text("Distance:", mini_police, WHITE, screen, WIDTH -175, 160)
         draw_text("Vitesse:", mini_police, WHITE, screen, WIDTH - 175, 180)
+        draw_text("Hauteur maximale:", mini_police, WHITE, screen, WIDTH -175, 200)
 
-        if int(rrr.x0.y) == int(y0max): # ne fonctionne pas dans tous les cas surement à cause des arpndi
+        if int(rrr.x0.y) == int(y0max): # ne fonctionne pas dans tous les cas surement à cause des arondis
             max_haut = True
             max_haut_x = miniRocketX
             max_haut_y = miniRocketY
@@ -195,7 +220,7 @@ def simulator(v0, x0, x0max, y0max, methode, forces, formes):
 
         if max_haut == True:
             pygame.draw.circle(screen, GREEN, (max_haut_x, max_haut_y), 5)
-            #print("max")
+            draw_text(str(y0max), mini_police, WHITE, screen, WIDTH - 55, 200 )
 
         # affichage de la distance
         distance_txt = mini_police.render(str(rrr.x0.x), 1, WHITE)
@@ -217,11 +242,13 @@ def simulator(v0, x0, x0max, y0max, methode, forces, formes):
 
 
         if sim == True:
-            for e in pygame.event.get():
-                if e.type == pygame.USEREVENT:
+
+            # Timer avant le début de la sim
+            for i in pygame.event.get():
+                if i.type == pygame.USEREVENT:
                     counter -= 1
                     text = str(counter) if counter > 0 else ' '
-            screen.blit(mega_police.render(text, True, RED), (HEIGHT/2 + 100, WIDTH/2))
+            screen.blit(mega_police.render(text, True, RED), (HEIGHT/2 + 100, WIDTH/2 - 200))
 
             if counter == 0:
                 pygame.time.set_timer(pygame.USEREVENT, 1000000) # (User events) fait des events customs
@@ -229,8 +256,8 @@ def simulator(v0, x0, x0max, y0max, methode, forces, formes):
                 rocket_coo_x = rrr.x0.x
                 rocket_coord_y = (-rrr.x0.y + 570)
                 miniRocketX = (rocket_coo_x * 0.1 + 930)
-                miniRocketY = (rocket_coord_y * 0.1 + 65) #/ y0max
-                Particles((rocket_coo_x + 480 - scroll[0]), (rocket_coord_y - scroll[1] + 540), screen, BLUE)
+                miniRocketY = (rocket_coord_y * 0.1 + 65)
+                Particles((rocket_coo_x + rocket_placementX + 1/2*64 - scroll[0]), (rocket_coord_y - scroll[1] + 560), screen, BLUE)
                 angle_rot += 5
                 time.sleep(0.02)
 
